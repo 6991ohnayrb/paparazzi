@@ -12,8 +12,6 @@ import com.facebook.appevents.AppEventsLogger;
 import com.facebook.login.LoginManager;
 import com.facebook.login.LoginResult;
 
-import butterknife.ButterKnife;
-
 public class LoginActivity extends Activity {
     private CallbackManager callbackManager;
 
@@ -22,7 +20,6 @@ public class LoginActivity extends Activity {
         super.onCreate(savedInstanceState);
         AppEventsLogger.activateApp(getApplication());
         setContentView(R.layout.activity_login);
-        ButterKnife.bind(this);
 
         callbackManager = CallbackManager.Factory.create();
 
