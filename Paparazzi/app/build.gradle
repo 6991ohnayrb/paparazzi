@@ -32,7 +32,11 @@ dependencies {
 
     // ButterKnife for binding views
     compile 'com.jakewharton:butterknife:8.8.1'
+    annotationProcessor 'com.jakewharton:butterknife-compiler:8.8.1'
 
     // For BottomNavigationView
     compile 'com.android.support:design:26.1.0'
+
+    // For FragmentPagerAdapter
+    compile 'com.android.support:support-v13:26.1.0'
 }

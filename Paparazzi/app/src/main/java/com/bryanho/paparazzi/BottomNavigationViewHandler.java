@@ -1,6 +1,8 @@
 package com.bryanho.paparazzi;
 
 import android.content.Context;
+import android.graphics.Paint;
+import android.graphics.Typeface;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.design.internal.BottomNavigationItemView;
@@ -9,17 +11,26 @@ import android.support.design.widget.BottomNavigationView;
 import android.support.v4.view.ViewPager;
 import android.util.AttributeSet;
 import android.util.SparseIntArray;
+import android.util.TypedValue;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.ViewGroup;
+import android.widget.ImageView;
+import android.widget.TextView;
 
 import java.lang.ref.WeakReference;
 import java.lang.reflect.Field;
 
 public class BottomNavigationViewHandler extends BottomNavigationView {
-    private ViewPager mViewPager;
+    private int mShiftAmount;
+    private float mScaleUpFactor;
+    private float mScaleDownFactor;
+    private boolean animationRecord;
+    private float mLargeLabelSize;
+    private float mSmallLabelSize;
+
     private MyOnNavigationItemSelectedListener mMyOnNavigationItemSelectedListener;
-    private BottomNavigationViewHandlerOnPageChangeListener mPageChangeListener;
     private BottomNavigationMenuView mMenuView;
     private BottomNavigationItemView[] mButtons;
 
@@ -35,33 +46,81 @@ public class BottomNavigationViewHandler extends BottomNavigationView {
         super(context, attrs, defStyleAttr);
     }
 
+    public void enableAnimation(boolean enable) {
+        final BottomNavigationMenuView mMenuView = getBottomNavigationMenuView();
+        final BottomNavigationItemView[] mButtons = getBottomNavigationItemViews();
+
+        for (BottomNavigationItemView button : mButtons) {
+            final TextView mLargeLabel = getField(button.getClass(), button, "mLargeLabel");
+            final TextView mSmallLabel = getField(button.getClass(), button, "mSmallLabel");
+
+            // if disable animation, need animationRecord the source value
+            if (!enable) {
+                if (!animationRecord) {
+                    animationRecord = true;
+                    mShiftAmount = getField(button.getClass(), button, "mShiftAmount");
+                    mScaleUpFactor = getField(button.getClass(), button, "mScaleUpFactor");
+                    mScaleDownFactor = getField(button.getClass(), button, "mScaleDownFactor");
+
+                    mLargeLabelSize = mLargeLabel.getTextSize();
+                    mSmallLabelSize = mSmallLabel.getTextSize();
+                }
+                // disable
+                setField(button.getClass(), button, "mShiftAmount", 0);
+                setField(button.getClass(), button, "mScaleUpFactor", 1);
+                setField(button.getClass(), button, "mScaleDownFactor", 1);
+
+                // let the mLargeLabel font size equal to mSmallLabel
+                mLargeLabel.setTextSize(TypedValue.COMPLEX_UNIT_PX, mSmallLabelSize);
+            } else {
+                if (!animationRecord) {
+                    return;
+                }
+                // enable animation
+                setField(button.getClass(), button, "mShiftAmount", mShiftAmount);
+                setField(button.getClass(), button, "mScaleUpFactor", mScaleUpFactor);
+                setField(button.getClass(), button, "mScaleDownFactor", mScaleDownFactor);
+                // restore
+                mLargeLabel.setTextSize(TypedValue.COMPLEX_UNIT_PX, mLargeLabelSize);
+            }
+        }
+        mMenuView.updateMenuView();
+    }
+
+    public void enableShiftingMode(boolean enable) {
+        final BottomNavigationMenuView mMenuView = getBottomNavigationMenuView();
+        setField(mMenuView.getClass(), mMenuView, "mShiftingMode", enable);
+        mMenuView.updateMenuView();
+    }
+
+    public void enableItemShiftingMode(boolean enable) {
+        final BottomNavigationMenuView mMenuView = getBottomNavigationMenuView();
+        final BottomNavigationItemView[] mButtons = getBottomNavigationItemViews();
+        for (BottomNavigationItemView button : mButtons) {
+            setField(button.getClass(), button, "mShiftingMode", enable);
+        }
+        mMenuView.updateMenuView();
+    }
+
     public void setCurrentItem(int item) {
         if (item < 0 || item >= getMaxItemCount()) {
             throw new ArrayIndexOutOfBoundsException("item is out of bounds, we expected 0 - " + (getMaxItemCount() - 1) + ". Actually " + item);
         }
 
-        // Get Menu View
-        final BottomNavigationMenuView menuView = getBottomNavigationMenuView();
-
-        // Get Buttons
-        final BottomNavigationItemView[] buttons = getBottomNavigationItemViews();
-
-        // Get OnClickListener
-        final View.OnClickListener mOnClickListener = getField(menuView.getClass(), menuView, "mOnClickListener");
+        final BottomNavigationMenuView mMenuView = getBottomNavigationMenuView();
+        final BottomNavigationItemView[] mButtons = getBottomNavigationItemViews();
+        final View.OnClickListener mOnClickListener = getField(mMenuView.getClass(), mMenuView, "mOnClickListener");
         if (mOnClickListener != null) {
-            // Call OnClickListener
-            mOnClickListener.onClick(buttons[item]);
+            mOnClickListener.onClick(mButtons[item]);
         }
     }
 
     @Override
     public void setOnNavigationItemSelectedListener(@Nullable OnNavigationItemSelectedListener listener) {
-        // if not set up with view pager, the same with father
         if (null == mMyOnNavigationItemSelectedListener) {
             super.setOnNavigationItemSelectedListener(listener);
             return;
         }
-
         mMyOnNavigationItemSelectedListener.setOnNavigationItemSelectedListener(listener);
     }
 
@@ -76,13 +135,14 @@ public class BottomNavigationViewHandler extends BottomNavigationView {
         if (null != mButtons) {
             return mButtons;
         }
-        /*
-         * 1 private final BottomNavigationMenuView mMenuView;
-         * 2 private BottomNavigationItemView[] mButtons;
-         */
+
         final BottomNavigationMenuView mMenuView = getBottomNavigationMenuView();
         mButtons = getField(mMenuView.getClass(), mMenuView, "mButtons");
         return mButtons;
+    }
+
+    public BottomNavigationItemView getBottomNavigationItemView(int position) {
+        return getBottomNavigationItemViews()[position];
     }
 
     private <T> T getField(Class targetClass, Object instance, String fieldName) {
@@ -96,11 +156,21 @@ public class BottomNavigationViewHandler extends BottomNavigationView {
         return null;
     }
 
-    private static class BottomNavigationViewHandlerOnPageChangeListener implements ViewPager.OnPageChangeListener {
-        private final WeakReference<BottomNavigationViewHandler> bottomNavigationViewHandlerWeakReference;
+    private void setField(Class targetClass, Object instance, String fieldName, Object value) {
+        try {
+            final Field field = targetClass.getDeclaredField(fieldName);
+            field.setAccessible(true);
+            field.set(instance, value);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
 
-        public BottomNavigationViewHandlerOnPageChangeListener(BottomNavigationViewHandler bottomNavigationViewHandler) {
-            bottomNavigationViewHandlerWeakReference = new WeakReference<>(bottomNavigationViewHandler);
+    private static class BottomNavigationViewHandlerOnPageChangeListener implements ViewPager.OnPageChangeListener {
+        private final WeakReference<BottomNavigationViewHandler> mBnveRef;
+
+        private BottomNavigationViewHandlerOnPageChangeListener(BottomNavigationViewHandler bnve) {
+            mBnveRef = new WeakReference<>(bnve);
         }
 
         @Override
@@ -113,9 +183,9 @@ public class BottomNavigationViewHandler extends BottomNavigationView {
 
         @Override
         public void onPageSelected(final int position) {
-            final BottomNavigationViewHandler bottomNavigationViewHandler = bottomNavigationViewHandlerWeakReference.get();
-            if (null != bottomNavigationViewHandler) {
-                bottomNavigationViewHandler.setCurrentItem(position);
+            final BottomNavigationViewHandler bnve = mBnveRef.get();
+            if (null != bnve) {
+                bnve.setCurrentItem(position);
             }
         }
     }
@@ -127,14 +197,13 @@ public class BottomNavigationViewHandler extends BottomNavigationView {
         private SparseIntArray items;// used for change ViewPager selected item
         private int previousPosition = -1;
 
-        MyOnNavigationItemSelectedListener(ViewPager viewPager, BottomNavigationViewHandler bottomNavigationViewHandler, boolean smoothScroll, OnNavigationItemSelectedListener listener) {
+        MyOnNavigationItemSelectedListener(ViewPager viewPager, BottomNavigationViewHandler bnve, boolean smoothScroll, OnNavigationItemSelectedListener listener) {
             this.viewPagerRef = new WeakReference<>(viewPager);
             this.listener = listener;
             this.smoothScroll = smoothScroll;
 
-            // create items
-            final Menu menu = bottomNavigationViewHandler.getMenu();
-            int size = menu.size();
+            final Menu menu = bnve.getMenu();
+            final int size = menu.size();
             items = new SparseIntArray(size);
             for (int i = 0; i < size; i++) {
                 int itemId = menu.getItem(i).getItemId();
@@ -149,13 +218,14 @@ public class BottomNavigationViewHandler extends BottomNavigationView {
         @Override
         public boolean onNavigationItemSelected(@NonNull MenuItem item) {
             final int position = items.get(item.getItemId());
+            // only set item when item changed
             if (previousPosition == position) {
                 return true;
             }
 
             // user listener
             if (null != listener) {
-                final boolean bool = listener.onNavigationItemSelected(item);
+                boolean bool = listener.onNavigationItemSelected(item);
                 // if the selected is invalid, no need change the view pager
                 if (!bool) {
                     return false;
@@ -169,10 +239,7 @@ public class BottomNavigationViewHandler extends BottomNavigationView {
             }
 
             viewPager.setCurrentItem(items.get(item.getItemId()), smoothScroll);
-
-            // update previous position
             previousPosition = position;
-
             return true;
         }
     }
