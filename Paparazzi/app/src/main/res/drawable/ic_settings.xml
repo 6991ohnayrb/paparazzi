@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="20dp"
+    android:height="20dp"
+    android:viewportHeight="20"
+    android:viewportWidth="20"
+    >
+
+    <path
+        android:fillType="evenOdd"
+        android:pathData="M10.5556,0.722222 C8.19306,0.722222,6.27778,2.6509,6.27778,5.03497
+C6.27778,7.41903,8.19306,9.34771,10.5556,9.34771
+C12.9181,9.34771,14.8333,7.41903,14.8333,5.03497
+C14.8333,2.6509,12.9181,0.722222,10.5556,0.722222 Z M0.722222,19.2778
+L19.2778,19.2778 L19.2778,16.2238 C19.2778,13.9541,14.2132,11.911,10,11.911
+C5.78679,11.911,0.722222,13.9541,0.722222,16.2238 L0.722222,19.2778 Z"
+        android:strokeColor="@color/com_facebook_blue"
+        android:strokeWidth="1.44444444"
+        />
+</vector>
