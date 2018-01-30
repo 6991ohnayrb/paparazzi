@@ -1,3 +1,8 @@
 <resources>
     <string name="app_name">Paparazzi</string>
+    <string name="facebook_app_id">403881266734285</string>
+    <string name="fb_login_protocol_scheme">fb403881266734285</string>
+
+    <string name="login_cancelled_message">Please login to use Paparazzi</string>
+    <string name="login_success_message">Successfully logged in via Facebook!</string>
 </resources>
