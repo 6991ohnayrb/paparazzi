@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!--App Name-->
+    <string name="app_name">Paparazzi</string>
+
+    <!--API Keys-->
+    <string name="facebook_app_id">403881266734285</string>
+    <string name="fb_login_protocol_scheme">fb403881266734285</string>
+
+    <!--Intent Extra Keys-->
+    <string name="facebook_user_id_key">key_facebook_user_id</string>
+</resources>

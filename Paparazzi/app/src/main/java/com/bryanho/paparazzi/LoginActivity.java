@@ -27,7 +27,14 @@ public class LoginActivity extends Activity {
             @Override
             public void onSuccess(LoginResult loginResult) {
                 Toast.makeText(LoginActivity.this, getString(R.string.login_success_message), Toast.LENGTH_SHORT).show();
-                // TODO: Navigate to MainActivity
+
+                // Put extras for Facebook User ID
+                if (loginResult != null && loginResult.getAccessToken() != null) {
+                    final Intent intent = new Intent(LoginActivity.this, MainActivity.class);
+                    intent.putExtra(getString(R.string.facebook_user_id_key), loginResult.getAccessToken().getUserId());
+                    startActivity(intent);
+                    finish();
+                }
             }
 
             @Override
@@ -37,6 +44,7 @@ public class LoginActivity extends Activity {
 
             @Override
             public void onError(FacebookException error) {
+                Toast.makeText(LoginActivity.this, getString(R.string.login_error_message), Toast.LENGTH_SHORT).show();
             }
         });
     }
