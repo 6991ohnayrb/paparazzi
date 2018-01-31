@@ -6,15 +6,19 @@ import android.support.annotation.Nullable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.bryanho.paparazzi.util.FacebookUtil;
 import com.facebook.Profile;
+import com.squareup.picasso.Picasso;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
 public class SettingsFragment extends Fragment {
 
+    @BindView(R.id.profile_picture) ImageView profilePicture;
     @BindView(R.id.first_name) TextView firstNameTextView;
     @BindView(R.id.last_name) TextView lastNameTextView;
 
@@ -36,7 +40,8 @@ public class SettingsFragment extends Fragment {
     }
 
     private void populateFields() {
-        firstNameTextView.setText(Profile.getCurrentProfile().getFirstName());
-        lastNameTextView.setText(Profile.getCurrentProfile().getLastName());
+        firstNameTextView.setText(FacebookUtil.getFirstName());
+        lastNameTextView.setText(FacebookUtil.getLastName());
+        Picasso.with(getContext()).load(getString(R.string.facebook_profile_pic_url, FacebookUtil.getProfileId())).into(profilePicture);
     }
 }
