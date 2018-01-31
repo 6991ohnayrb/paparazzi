@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:padding="20dp"
+    >
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:fontFamily="@font/montserrat_regular"
+        android:text="@string/game_room_name"
+        android:textColor="@color/lightGray"
+        android:textSize="14sp"
+        />
+
+    <EditText
+        android:id="@+id/game_room_name"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="5dp"
+        android:fontFamily="@font/montserrat_regular"
+        android:hint="@string/game_room_name_placeholder"
+        android:inputType="text"
+        android:textColor="@color/darkGray"
+        android:textColorHint="@color/colorPrimaryLight"
+        android:textSize="18sp"
+        />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:fontFamily="@font/montserrat_regular"
+        android:text="@string/maximum_players"
+        android:textColor="@color/lightGray"
+        android:textSize="14sp"
+        />
+
+    <EditText
+        android:id="@+id/maximum_players"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="5dp"
+        android:fontFamily="@font/montserrat_regular"
+        android:hint="@string/maximum_players_placeholder"
+        android:inputType="number"
+        android:textColor="@color/darkGray"
+        android:textColorHint="@color/colorPrimaryLight"
+        android:textSize="18sp"
+        />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:fontFamily="@font/montserrat_regular"
+        android:text="@string/game_duration_hours"
+        android:textColor="@color/lightGray"
+        android:textSize="14sp"
+        />
+
+    <EditText
+        android:id="@+id/game_duration"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="5dp"
+        android:fontFamily="@font/montserrat_regular"
+        android:hint="@string/game_duration_placeholder"
+        android:inputType="number"
+        android:textColor="@color/darkGray"
+        android:textColorHint="@color/colorPrimaryLight"
+        android:textSize="18sp"
+        />
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        />
+
+    <Button
+        android:id="@+id/create"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:fontFamily="@font/montserrat_bold"
+        android:text="@string/create"
+        android:textColor="@color/colorPrimaryDark"
+        android:textSize="18sp"
+        />
+
+</LinearLayout>

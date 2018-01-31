@@ -39,4 +39,7 @@ dependencies {
 
     // For FragmentPagerAdapter
     compile 'com.android.support:support-v13:26.1.0'
+
+    compileOnly 'org.projectlombok:lombok:1.16.12'
+    annotationProcessor 'org.projectlombok:lombok:1.16.12'
 }

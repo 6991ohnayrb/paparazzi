@@ -27,6 +27,7 @@ public class MainActivity extends Activity {
     private MyGamesFragment myGamesFragment = MyGamesFragment.newInstance();
     private NearbyGameFragment nearbyGameFragment = NearbyGameFragment.newInstance();
     private SettingsFragment settingsFragment = SettingsFragment.newInstance();
+    private NewGameFragment newGameFragment = NewGameFragment.newInstance();
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -46,7 +47,7 @@ public class MainActivity extends Activity {
     }
 
     private void setupFragments() {
-        fragmentList.add(myGamesFragment);
+        fragmentList.add(newGameFragment);
         fragmentList.add(nearbyGameFragment);
         fragmentList.add(settingsFragment);
 
