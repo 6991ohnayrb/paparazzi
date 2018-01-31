@@ -7,6 +7,15 @@
     android:padding="20dp"
     >
 
+    <ImageView
+        android:id="@+id/profile_picture"
+        android:layout_width="100dp"
+        android:layout_height="100dp"
+        android:layout_gravity="center"
+        android:layout_marginBottom="40dp"
+        android:background="@drawable/com_facebook_profile_picture_blank_portrait"
+        />
+
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"

@@ -1,6 +1,6 @@
 package com.bryanho.paparazzi.objects;
 
-import com.facebook.Profile;
+import com.bryanho.paparazzi.util.FacebookUtil;
 
 import lombok.Data;
 
@@ -12,9 +12,8 @@ class Player {
 
     // Creates default player with current profile information
     Player() {
-        final Profile currentProfile = Profile.getCurrentProfile();
-        facebookUserId = currentProfile.getId();
-        firstName = currentProfile.getFirstName();
-        lastName = currentProfile.getLastName();
+        facebookUserId = FacebookUtil.getProfileId();
+        firstName = FacebookUtil.getFirstName();
+        lastName = FacebookUtil.getLastName();
     }
 }

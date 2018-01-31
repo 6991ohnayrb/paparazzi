@@ -40,6 +40,10 @@ dependencies {
     // For FragmentPagerAdapter
     compile 'com.android.support:support-v13:26.1.0'
 
+    // Lombok
     compileOnly 'org.projectlombok:lombok:1.16.12'
     annotationProcessor 'org.projectlombok:lombok:1.16.12'
+
+    // Picasso
+    compile 'com.squareup.picasso:picasso:2.5.2'
 }

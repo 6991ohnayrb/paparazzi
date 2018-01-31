@@ -9,4 +9,7 @@
 
     <!--Intent Extra Keys-->
     <string name="facebook_user_id_key">key_facebook_user_id</string>
+    
+    <!--API URL-->
+    <string name="facebook_profile_pic_url">https://graph.facebook.com/%1$s/picture?type=square</string>
 </resources>
