@@ -5,6 +5,7 @@
     <string name="login_cancelled_message">Please login to use Paparazzi</string>
     <string name="login_success_message">Successfully logged in via Facebook!</string>
     <string name="login_error_message">Something went wrong, please try again in a few minutes</string>
+    <string name="my_games">My Games</string>
     <string name="nearby_games">Nearby Games</string>
     <string name="settings">Settings</string>
 </resources>

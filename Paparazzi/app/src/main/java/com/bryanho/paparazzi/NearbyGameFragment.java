@@ -20,6 +20,6 @@ public class NearbyGameFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, Bundle savedInstanceState) {
         super.onCreateView(inflater, container, savedInstanceState);
-        return inflater.inflate(R.layout.fragment_new_game, container, false);
+        return inflater.inflate(R.layout.fragment_my_games, container, false);
     }
 }

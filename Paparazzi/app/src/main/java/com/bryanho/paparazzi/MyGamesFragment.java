@@ -7,19 +7,19 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-public class NewGameFragment extends Fragment {
+public class MyGamesFragment extends Fragment {
 
-    public NewGameFragment() {
+    public MyGamesFragment() {
     }
 
-    public static NewGameFragment newInstance() {
-        return new NewGameFragment();
+    public static MyGamesFragment newInstance() {
+        return new MyGamesFragment();
     }
 
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, Bundle savedInstanceState) {
         super.onCreateView(inflater, container, savedInstanceState);
-        return inflater.inflate(R.layout.fragment_new_game, container, false);
+        return inflater.inflate(R.layout.fragment_my_games, container, false);
     }
 }

@@ -24,7 +24,7 @@ public class MainActivity extends Activity {
     private SparseIntArray items = new SparseIntArray(3);
     private List<Fragment> fragmentList = new ArrayList<>();
 
-    private NewGameFragment newGameFragment = NewGameFragment.newInstance();
+    private MyGamesFragment myGamesFragment = MyGamesFragment.newInstance();
     private NearbyGameFragment nearbyGameFragment = NearbyGameFragment.newInstance();
     private SettingsFragment settingsFragment = SettingsFragment.newInstance();
 
@@ -46,11 +46,11 @@ public class MainActivity extends Activity {
     }
 
     private void setupFragments() {
-        fragmentList.add(newGameFragment);
+        fragmentList.add(myGamesFragment);
         fragmentList.add(nearbyGameFragment);
         fragmentList.add(settingsFragment);
 
-        items.put(R.id.menu_create, 0);
+        items.put(R.id.menu_games, 0);
         items.put(R.id.menu_nearby, 1);
         items.put(R.id.menu_settings, 2);
 
