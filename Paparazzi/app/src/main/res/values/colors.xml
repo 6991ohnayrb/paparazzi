@@ -7,4 +7,9 @@
     <color name="white">#FFFFFF</color>
     <color name="darkGray">#444A57</color>
     <color name="lightGray">#96969A</color>
+    <color name="darkCyan">#004040</color>
+    <color name="lightCyan">#008080</color>
+    <color name="black">#000000</color>
+    <color name="lightMaroon">#800000</color>
+    <color name="darkMaroon">#400000</color>
 </resources>
