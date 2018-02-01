@@ -8,6 +8,12 @@ public class FacebookUtil {
         return profile != null ? profile.getId() : null;
     }
 
+    public static String getFullName() {
+        final String firstName = getFirstName();
+        final String lastName = getLastName();
+        return firstName != null && lastName != null ? firstName + " " + lastName : null;
+    }
+
     public static String getFirstName() {
         final Profile profile = Profile.getCurrentProfile();
         return profile != null ? profile.getFirstName() : null;

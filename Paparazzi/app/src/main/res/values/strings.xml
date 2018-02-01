@@ -1,11 +1,14 @@
 <resources>
     <string name="create">Create</string>
     <string name="create_new_game">Create New Game</string>
+    <string name="explore_games">Explore Games</string>
     <string name="first_name">First Name</string>
     <string name="game_duration_hours">Game Duration (Hours)</string>
     <string name="game_duration_placeholder">Enter Game Duration</string>
     <string name="game_room_name">Game Room Name</string>
     <string name="game_room_name_placeholder">Enter Game Room Name</string>
+    <string name="greeting_personalized">Hi,\n%1$s</string>
+    <string name="home">Home</string>
     <string name="last_name">Last Name</string>
     <string name="login_cancelled_message">Please login to use Paparazzi</string>
     <string name="login_success_message">Successfully logged in via Facebook!</string>
