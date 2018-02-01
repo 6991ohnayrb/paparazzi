@@ -3,7 +3,7 @@ package com.bryanho.paparazzi.objects;
 import lombok.Data;
 
 @Data
-class GameInfo {
+public class GameInfo {
     private String gameRoomName;
     private int playerCount;
     private int gameDuration;
