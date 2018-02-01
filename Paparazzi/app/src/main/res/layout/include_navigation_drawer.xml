@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="260dp"
+    android:layout_height="match_parent"
+    android:layout_gravity="start"
+    android:background="@color/white"
+    android:orientation="vertical"
+    >
+
+    <TextView
+        android:id="@+id/user_greeting"
+        style="@style/NavigationMenuHeader"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:fontFamily="@font/montserrat_bold"
+        />
+
+    <TextView
+        android:id="@+id/menu_explore_games"
+        style="@style/NavigationMenuItem"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:fontFamily="@font/montserrat_bold"
+        android:text="@string/explore_games"
+        android:textSize="16sp"
+        android:visibility="gone"
+        />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        >
+
+        <TextView
+            style="@style/NavigationMenuItem"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:fontFamily="@font/montserrat_regular"
+            android:text="@string/my_games"
+            android:textSize="14sp"
+            />
+
+        <ImageView
+            android:id="@+id/menu_new_game"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:layout_gravity="center_vertical"
+            android:layout_marginEnd="10dp"
+            android:background="@drawable/ic_new_game"
+            android:backgroundTint="@color/darkGray"
+            />
+
+    </LinearLayout>
+
+    <ListView
+        android:id="@+id/menu_games_list"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:background="@color/colorPrimaryLight"
+        android:orientation="vertical"
+        android:paddingEnd="0dp"
+        android:paddingStart="10dp"
+        />
+
+    <TextView
+        android:id="@+id/menu_settings"
+        style="@style/NavigationMenuItem"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:fontFamily="@font/montserrat_regular"
+        android:text="@string/settings"
+        android:textSize="16sp"
+        />
+
+</LinearLayout>
