@@ -1,6 +1,7 @@
 <resources>
     <string name="create">Create</string>
     <string name="create_new_game">Create New Game</string>
+    <string name="enter_your_message">Enter Your Message</string>
     <string name="explore_games">Explore Games</string>
     <string name="first_name">First Name</string>
     <string name="game_duration_hours">Game Duration (Hours)</string>
