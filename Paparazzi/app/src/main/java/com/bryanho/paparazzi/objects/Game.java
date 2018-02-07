@@ -10,6 +10,7 @@ public class Game {
     private int gameId;
     private GameInfo gameInfo;
     private List<Player> players = new ArrayList<>();
+    private List<Message> messages = new ArrayList<>();
 
     public Game(String gameRoomName, int maximumPlayers, int gameDuration) {
         gameId = Math.abs(Long.toString(System.currentTimeMillis()).hashCode());

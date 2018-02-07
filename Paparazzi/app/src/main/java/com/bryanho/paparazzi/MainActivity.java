@@ -6,6 +6,7 @@ import android.support.annotation.Nullable;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
@@ -27,6 +28,8 @@ public class MainActivity extends PaparazziActivity {
     @BindView(R.id.navigation_drawer) LinearLayout navigationDrawer;
     @BindView(R.id.user_greeting) TextView userGreeting;
     @BindView(R.id.menu_games_list) ListView gamesList;
+
+    public Game currentGame;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -75,6 +78,14 @@ public class MainActivity extends PaparazziActivity {
         if (context != null && gameList != null) {
             final GameAdapter gameAdapter = new GameAdapter(context, gameList);
             gamesList.setAdapter(gameAdapter);
+            gamesList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                @Override
+                public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                    currentGame = (Game) gamesList.getItemAtPosition(position);
+                    navigateToFragment(GameRoomFragment.newInstance());
+                    drawerLayout.closeDrawer(navigationDrawer);
+                }
+            });
         }
     }
 
