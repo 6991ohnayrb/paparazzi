@@ -1,8 +1,10 @@
-package com.bryanho.paparazzi;
+package com.bryanho.paparazzi.activities;
 
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
+
+import com.bryanho.paparazzi.R;
 
 public abstract class PaparazziActivity extends AppCompatActivity {
 

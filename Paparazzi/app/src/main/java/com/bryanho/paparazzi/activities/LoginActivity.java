@@ -1,10 +1,10 @@
-package com.bryanho.paparazzi;
+package com.bryanho.paparazzi.activities;
 
-import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.widget.Toast;
 
+import com.bryanho.paparazzi.R;
 import com.facebook.CallbackManager;
 import com.facebook.FacebookCallback;
 import com.facebook.FacebookException;
@@ -12,7 +12,7 @@ import com.facebook.appevents.AppEventsLogger;
 import com.facebook.login.LoginManager;
 import com.facebook.login.LoginResult;
 
-public class LoginActivity extends Activity {
+public class LoginActivity extends PaparazziActivity {
     private CallbackManager callbackManager;
 
     @Override

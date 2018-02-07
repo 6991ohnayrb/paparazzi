@@ -1,4 +1,4 @@
-package com.bryanho.paparazzi;
+package com.bryanho.paparazzi.fragments;
 
 import android.app.Activity;
 import android.content.Context;
@@ -11,6 +11,9 @@ import android.view.ViewGroup;
 import android.widget.ListView;
 import android.widget.TextView;
 
+import com.bryanho.paparazzi.adapters.GameRoomMessageAdapter;
+import com.bryanho.paparazzi.activities.MainActivity;
+import com.bryanho.paparazzi.R;
 import com.bryanho.paparazzi.objects.Game;
 import com.bryanho.paparazzi.objects.GameInfo;
 import com.bryanho.paparazzi.objects.Message;

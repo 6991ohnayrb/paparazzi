@@ -1,4 +1,4 @@
-package com.bryanho.paparazzi;
+package com.bryanho.paparazzi.adapters;
 
 import android.content.Context;
 import android.support.annotation.NonNull;
@@ -9,6 +9,7 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.TextView;
 
+import com.bryanho.paparazzi.R;
 import com.bryanho.paparazzi.objects.Game;
 import com.bryanho.paparazzi.objects.GameInfo;
 
@@ -16,7 +17,7 @@ import java.util.List;
 
 public class GameAdapter extends ArrayAdapter<Game> {
 
-    GameAdapter(@NonNull Context context, @NonNull List<Game> gameList) {
+    public GameAdapter(@NonNull Context context, @NonNull List<Game> gameList) {
         super(context, 0, gameList);
     }
 

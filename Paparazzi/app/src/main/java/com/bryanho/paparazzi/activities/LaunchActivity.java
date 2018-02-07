@@ -1,4 +1,4 @@
-package com.bryanho.paparazzi;
+package com.bryanho.paparazzi.activities;
 
 import android.app.Activity;
 import android.content.Intent;
@@ -6,7 +6,7 @@ import android.os.Bundle;
 
 import com.facebook.AccessToken;
 
-public class LaunchActivity extends Activity {
+public class LaunchActivity extends PaparazziActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
