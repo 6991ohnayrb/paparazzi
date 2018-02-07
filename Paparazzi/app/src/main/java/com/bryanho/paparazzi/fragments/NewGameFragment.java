@@ -35,6 +35,7 @@ public class NewGameFragment extends PaparazziFragment {
         super.onCreateView(inflater, container, savedInstanceState);
         final View view = inflater.inflate(R.layout.fragment_new_game, container, false);
         ButterKnife.bind(this, view);
+        setupGameService();
         return view;
     }
 

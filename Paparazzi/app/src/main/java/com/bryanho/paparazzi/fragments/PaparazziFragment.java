@@ -10,7 +10,7 @@ public abstract class PaparazziFragment extends Fragment {
 
     protected GameService gameService;
 
-    public PaparazziFragment() {
+    protected void setupGameService() {
         final Activity activity = getActivity();
         if (activity instanceof PaparazziActivity) {
             final PaparazziActivity paparazziActivity = (PaparazziActivity) activity;

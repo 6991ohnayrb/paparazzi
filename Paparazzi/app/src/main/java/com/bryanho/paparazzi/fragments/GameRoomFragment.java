@@ -45,6 +45,7 @@ public class GameRoomFragment extends PaparazziFragment {
         super.onCreateView(inflater, container, savedInstanceState);
         final View view = inflater.inflate(R.layout.fragment_game_room, container, false);
         ButterKnife.bind(this, view);
+        setupGameService();
 
         final Activity activity = getActivity();
         if (activity instanceof MainActivity) {

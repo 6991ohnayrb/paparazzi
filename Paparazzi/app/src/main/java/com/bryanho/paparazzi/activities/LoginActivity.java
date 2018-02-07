@@ -27,6 +27,8 @@ public class LoginActivity extends PaparazziActivity {
         AppEventsLogger.activateApp(getApplication());
         setContentView(R.layout.activity_login);
 
+        initializeStethoscope(getApplicationContext());
+
         callbackManager = CallbackManager.Factory.create();
 
         LoginManager.getInstance().registerCallback(callbackManager, new FacebookCallback<LoginResult>() {

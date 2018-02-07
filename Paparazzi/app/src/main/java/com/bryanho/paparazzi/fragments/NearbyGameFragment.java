@@ -22,6 +22,7 @@ public class NearbyGameFragment extends PaparazziFragment {
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, Bundle savedInstanceState) {
         super.onCreateView(inflater, container, savedInstanceState);
+        setupGameService();
         return inflater.inflate(R.layout.fragment_my_games, container, false);
     }
 }

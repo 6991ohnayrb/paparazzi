@@ -12,6 +12,7 @@ import android.widget.ListView;
 import android.widget.TextView;
 
 import com.bryanho.paparazzi.R;
+import com.bryanho.paparazzi.fragments.MyGamesFragment;
 import com.bryanho.paparazzi.fragments.SettingsFragment;
 import com.bryanho.paparazzi.adapters.GameAdapter;
 import com.bryanho.paparazzi.fragments.GameRoomFragment;
@@ -40,10 +41,14 @@ public class MainActivity extends PaparazziActivity {
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        initializeStethoscope(getApplicationContext());
         ButterKnife.bind(this);
         setToolbarLeftIcon();
         setGreeting();
         setMenuGamesList();
+
+        // TODO: Remove this after testing HTTP request
+        navigateToFragment(MyGamesFragment.newInstance());
     }
 
     private void setToolbarLeftIcon() {
