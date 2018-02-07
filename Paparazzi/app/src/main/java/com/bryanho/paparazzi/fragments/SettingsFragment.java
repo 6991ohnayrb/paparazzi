@@ -16,7 +16,7 @@ import com.squareup.picasso.Picasso;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
-public class SettingsFragment extends Fragment {
+public class SettingsFragment extends PaparazziFragment {
 
     @BindView(R.id.profile_picture) ImageView profilePicture;
     @BindView(R.id.first_name) TextView firstNameTextView;

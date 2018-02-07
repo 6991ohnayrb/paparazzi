@@ -16,7 +16,7 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
-public class NewGameFragment extends Fragment {
+public class NewGameFragment extends PaparazziFragment {
 
     @BindView(R.id.game_room_name) EditText gameRoomName;
     @BindView(R.id.maximum_players) EditText maximumPlayers;

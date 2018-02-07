@@ -25,7 +25,7 @@ import java.util.List;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
-public class GameRoomFragment extends Fragment {
+public class GameRoomFragment extends PaparazziFragment {
 
     @BindView(R.id.game_room_messages) ListView messageList;
     @BindView(R.id.game_room_name) TextView gameRoomName;

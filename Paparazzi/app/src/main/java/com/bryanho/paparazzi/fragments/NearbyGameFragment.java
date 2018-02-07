@@ -9,7 +9,7 @@ import android.view.ViewGroup;
 
 import com.bryanho.paparazzi.R;
 
-public class NearbyGameFragment extends Fragment {
+public class NearbyGameFragment extends PaparazziFragment {
 
     public NearbyGameFragment() {
     }
