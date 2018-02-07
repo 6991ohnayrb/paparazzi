@@ -1,4 +1,4 @@
-package com.bryanho.paparazzi;
+package com.bryanho.paparazzi.adapters;
 
 import android.content.Context;
 import android.support.annotation.NonNull;
@@ -9,13 +9,14 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.TextView;
 
+import com.bryanho.paparazzi.R;
 import com.bryanho.paparazzi.objects.Message;
 
 import java.util.List;
 
 public class GameRoomMessageAdapter extends ArrayAdapter<Message> {
 
-    GameRoomMessageAdapter(@NonNull Context context, @NonNull List<Message> messages) {
+    public GameRoomMessageAdapter(@NonNull Context context, @NonNull List<Message> messages) {
         super(context, 0, messages);
     }
 

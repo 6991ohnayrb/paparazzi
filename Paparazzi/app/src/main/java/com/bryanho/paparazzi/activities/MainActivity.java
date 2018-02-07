@@ -1,4 +1,4 @@
-package com.bryanho.paparazzi;
+package com.bryanho.paparazzi.activities;
 
 import android.content.Context;
 import android.os.Bundle;
@@ -11,6 +11,11 @@ import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
 
+import com.bryanho.paparazzi.R;
+import com.bryanho.paparazzi.fragments.SettingsFragment;
+import com.bryanho.paparazzi.adapters.GameAdapter;
+import com.bryanho.paparazzi.fragments.GameRoomFragment;
+import com.bryanho.paparazzi.fragments.NewGameFragment;
 import com.bryanho.paparazzi.objects.Game;
 import com.bryanho.paparazzi.util.FacebookUtil;
 
