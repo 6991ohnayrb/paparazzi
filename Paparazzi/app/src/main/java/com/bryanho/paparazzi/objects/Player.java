@@ -1,6 +1,7 @@
 package com.bryanho.paparazzi.objects;
 
 import com.bryanho.paparazzi.util.FacebookUtil;
+import com.facebook.Profile;
 
 import lombok.Data;
 
@@ -22,5 +23,12 @@ public class Player {
         this.facebookUserId = facebookUserId;
         firstName = "John";
         lastName = "Doe";
+    }
+
+    // Creates a player with Profile
+    public Player(Profile profile) {
+        facebookUserId = profile.getId();
+        firstName = profile.getFirstName();
+        lastName = profile.getLastName();
     }
 }

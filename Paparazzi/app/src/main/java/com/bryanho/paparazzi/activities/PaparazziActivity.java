@@ -8,21 +8,32 @@ import android.support.v7.app.AppCompatActivity;
 import com.bryanho.paparazzi.R;
 import com.bryanho.paparazzi.services.GameService;
 import com.facebook.stetho.Stetho;
+import com.facebook.stetho.okhttp3.StethoInterceptor;
 import com.jakewharton.retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory;
 
+import java.util.concurrent.TimeUnit;
+
+import okhttp3.OkHttpClient;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
 public abstract class PaparazziActivity extends AppCompatActivity {
 
+    private static final String baseUrl = "http://131.179.50.253:8000";
     public GameService gameService;
 
     public PaparazziActivity() {
+        final OkHttpClient okHttpClient = new OkHttpClient.Builder()
+                .addNetworkInterceptor(new StethoInterceptor())
+                .connectTimeout(30, TimeUnit.SECONDS)
+                .readTimeout(30, TimeUnit.SECONDS)
+                .writeTimeout(30, TimeUnit.SECONDS)
+                .build();
         final Retrofit retrofit = new Retrofit.Builder()
-//                .baseUrl("http://127.0.0.1:8000")
-                .baseUrl("http://www.google.com")
+                .baseUrl(baseUrl)
                 .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
                 .addConverterFactory(GsonConverterFactory.create())
+                .client(okHttpClient)
                 .build();
         gameService = retrofit.create(GameService.class);
     }
