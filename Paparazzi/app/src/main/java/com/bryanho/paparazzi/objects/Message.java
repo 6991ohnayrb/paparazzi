@@ -2,13 +2,15 @@ package com.bryanho.paparazzi.objects;
 
 import android.graphics.Bitmap;
 
+import com.google.gson.annotations.SerializedName;
+
 import lombok.Data;
 
 @Data
 public class Message {
-    private Player sentFrom;
-    private String message;
-    private Bitmap image;
+    @SerializedName("sentFrom") private Player sentFrom;
+    @SerializedName("message") private String message;
+    @SerializedName("image") private String image;
 
     public Message(Player sentFrom, String message) {
         this.sentFrom = sentFrom;

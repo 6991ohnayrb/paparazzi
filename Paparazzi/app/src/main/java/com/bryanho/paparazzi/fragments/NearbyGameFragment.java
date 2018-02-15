@@ -9,7 +9,7 @@ import android.view.ViewGroup;
 
 import com.bryanho.paparazzi.R;
 
-public class NearbyGameFragment extends Fragment {
+public class NearbyGameFragment extends PaparazziFragment {
 
     public NearbyGameFragment() {
     }
@@ -22,6 +22,7 @@ public class NearbyGameFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, Bundle savedInstanceState) {
         super.onCreateView(inflater, container, savedInstanceState);
+        setupGameService();
         return inflater.inflate(R.layout.fragment_my_games, container, false);
     }
 }

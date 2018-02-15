@@ -1,6 +1,7 @@
 package com.bryanho.paparazzi.activities;
 
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.widget.DrawerLayout;
@@ -10,13 +11,20 @@ import android.widget.AdapterView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.bryanho.paparazzi.R;
-import com.bryanho.paparazzi.fragments.SettingsFragment;
 import com.bryanho.paparazzi.adapters.GameAdapter;
 import com.bryanho.paparazzi.fragments.GameRoomFragment;
+import com.bryanho.paparazzi.fragments.MyGamesFragment;
 import com.bryanho.paparazzi.fragments.NewGameFragment;
+import com.bryanho.paparazzi.fragments.SettingsFragment;
 import com.bryanho.paparazzi.objects.Game;
+import com.bryanho.paparazzi.objects.LoginStatus;
+import com.bryanho.paparazzi.objects.Player;
+import com.bryanho.paparazzi.requests.GetGamesRequest;
+import com.bryanho.paparazzi.responses.GamesResponse;
+import com.bryanho.paparazzi.responses.LoginResponse;
 import com.bryanho.paparazzi.util.FacebookUtil;
 
 import java.util.ArrayList;
@@ -25,6 +33,10 @@ import java.util.List;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+import io.reactivex.Observable;
+import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.functions.Consumer;
+import io.reactivex.schedulers.Schedulers;
 
 public class MainActivity extends PaparazziActivity {
 
@@ -35,15 +47,21 @@ public class MainActivity extends PaparazziActivity {
     @BindView(R.id.menu_games_list) ListView gamesList;
 
     public Game currentGame;
+    public List<Game> games;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        initializeStethoscope(getApplicationContext());
         ButterKnife.bind(this);
         setToolbarLeftIcon();
         setGreeting();
+        fetchGames();
         setMenuGamesList();
+
+        // TODO: Remove this after testing HTTP request
+        navigateToFragment(MyGamesFragment.newInstance());
     }
 
     private void setToolbarLeftIcon() {
@@ -71,17 +89,32 @@ public class MainActivity extends PaparazziActivity {
         }
     }
 
+    private void fetchGames() {
+        final Observable<GamesResponse> gamesResponseObservable = gameService.getGames(new GetGamesRequest(new Player()));
+        gamesResponseObservable
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .doOnError(new Consumer<Throwable>() {
+                    @Override
+                    public void accept(Throwable throwable) throws Exception {
+                        System.err.println(throwable.getMessage());
+                    }
+                })
+                .subscribe(new Consumer<GamesResponse>() {
+                    @Override
+                    public void accept(GamesResponse gamesResponse) throws Exception {
+                        if (gamesResponse != null) {
+                            games = gamesResponse.getGames();
+                            setMenuGamesList();
+                        }
+                    }
+                });
+    }
+
     private void setMenuGamesList() {
         final Context context = getApplicationContext();
-
-        // TODO: Fix this later, just for testing now
-        final List<Game> gameList = new ArrayList<>();
-        for (int i = 0; i < 20; i++) {
-            gameList.add(new Game("Room " + i, 0, 0));
-        }
-
-        if (context != null && gameList != null) {
-            final GameAdapter gameAdapter = new GameAdapter(context, gameList);
+        if (context != null && games != null) {
+            final GameAdapter gameAdapter = new GameAdapter(context, games);
             gamesList.setAdapter(gameAdapter);
             gamesList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                 @Override

@@ -12,4 +12,5 @@
     
     <!--API URL-->
     <string name="facebook_profile_pic_url">https://graph.facebook.com/%1$s/picture?type=square</string>
+    <string name="base_url">http://127.0.0.1:8000</string>
 </resources>
