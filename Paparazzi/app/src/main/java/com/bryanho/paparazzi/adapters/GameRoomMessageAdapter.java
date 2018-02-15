@@ -7,10 +7,13 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.bryanho.paparazzi.R;
 import com.bryanho.paparazzi.objects.Message;
+import com.bryanho.paparazzi.util.FacebookUtil;
+import com.squareup.picasso.Picasso;
 
 import java.util.List;
 
@@ -29,18 +32,25 @@ public class GameRoomMessageAdapter extends ArrayAdapter<Message> {
             convertView = LayoutInflater.from(getContext()).inflate(R.layout.message_item, parent, false);
         }
 
+        final Context context = getContext();
         final TextView messageFromSelf = convertView.findViewById(R.id.message_from_self);
         final TextView messageFromOther = convertView.findViewById(R.id.message_from_other);
+        final ImageView messageFromOtherImage = convertView.findViewById(R.id.message_from_other_image);
 
         if (message != null && messageFromSelf != null && messageFromOther != null) {
             if (message.isFromMyself()) {
                 messageFromSelf.setVisibility(View.VISIBLE);
                 messageFromOther.setVisibility(View.GONE);
+                messageFromOtherImage.setVisibility(View.GONE);
                 messageFromSelf.setText(message.getMessage());
             } else {
                 messageFromSelf.setVisibility(View.GONE);
                 messageFromOther.setVisibility(View.VISIBLE);
+                messageFromOtherImage.setVisibility(View.VISIBLE);
                 messageFromOther.setText(message.getMessage());
+                // TODO: Uncomment line below when done testing
+                // Picasso.with(context).load(context.getString(R.string.facebook_profile_pic_url, message.getSentFrom().getFacebookUserId())).into(messageFromOtherImage);
+                Picasso.with(context).load(FacebookUtil.getProfileImageUrl()).into(messageFromOtherImage);
             }
         }
 
