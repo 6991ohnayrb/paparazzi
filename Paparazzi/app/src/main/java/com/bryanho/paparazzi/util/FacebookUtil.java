@@ -23,4 +23,8 @@ public class FacebookUtil {
         final Profile profile = Profile.getCurrentProfile();
         return profile != null ? profile.getLastName() : null;
     }
+
+    public static String getProfileImageUrl() {
+        return "https://graph.facebook.com/" + getProfileId() + "/picture?type=square";
+    }
 }

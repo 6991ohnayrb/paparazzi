@@ -70,6 +70,16 @@ public class GameRoomFragment extends PaparazziFragment {
         if (context != null) {
             final GameRoomMessageAdapter gameRoomMessageAdapter = new GameRoomMessageAdapter(context, messages);
             messageList.setAdapter(gameRoomMessageAdapter);
+            scrollToBottom();
         }
+    }
+
+    private void scrollToBottom() {
+        messageList.post(new Runnable() {
+            @Override
+            public void run() {
+                messageList.setSelection(messageList.getAdapter().getCount() - 1);
+            }
+        });
     }
 }
