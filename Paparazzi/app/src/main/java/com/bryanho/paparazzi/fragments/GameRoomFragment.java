@@ -8,6 +8,7 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.TextView;
 
@@ -18,17 +19,28 @@ import com.bryanho.paparazzi.objects.Game;
 import com.bryanho.paparazzi.objects.GameInfo;
 import com.bryanho.paparazzi.objects.Message;
 import com.bryanho.paparazzi.objects.Player;
+import com.bryanho.paparazzi.requests.GetGamesRequest;
+import com.bryanho.paparazzi.requests.SendMessageRequest;
+import com.bryanho.paparazzi.responses.GamesResponse;
+import com.bryanho.paparazzi.responses.SendMessageResponse;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import butterknife.OnClick;
+import io.reactivex.Observable;
+import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.functions.Consumer;
+import io.reactivex.schedulers.Schedulers;
+import retrofit2.http.Body;
 
 public class GameRoomFragment extends PaparazziFragment {
 
     @BindView(R.id.game_room_messages) ListView messageList;
     @BindView(R.id.game_room_name) TextView gameRoomName;
+    @BindView(R.id.game_room_message_text) EditText gameRoomMessageText;
 
     private Game currentGame;
 
@@ -81,5 +93,32 @@ public class GameRoomFragment extends PaparazziFragment {
                 messageList.setSelection(messageList.getAdapter().getCount() - 1);
             }
         });
+    }
+
+    @OnClick(R.id.game_room_send_message)
+    public void sendMessage() {
+        final String messageText = gameRoomMessageText.getText().toString();
+        if (messageText.length() != 0) {
+            final SendMessageRequest sendMessageRequest = new SendMessageRequest(
+                    currentGame.getGameId(),
+                    new Message(new Player(), messageText)
+            );
+            final Observable<SendMessageResponse> sendMessageResponseObservable = gameService.sendMessage(sendMessageRequest);
+            sendMessageResponseObservable
+                    .subscribeOn(Schedulers.io())
+                    .observeOn(AndroidSchedulers.mainThread())
+                    .doOnError(new Consumer<Throwable>() {
+                        @Override
+                        public void accept(Throwable throwable) throws Exception {
+                            System.err.println(throwable.getMessage());
+                        }
+                    })
+                    .subscribe(new Consumer<SendMessageResponse>() {
+                        @Override
+                        public void accept(SendMessageResponse sendMessageResponse) throws Exception {
+
+                        }
+                    });
+        }
     }
 }

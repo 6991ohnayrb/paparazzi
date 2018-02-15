@@ -43,6 +43,7 @@
             />
 
         <EditText
+            android:id="@+id/game_room_message_text"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_gravity="center_vertical"
@@ -54,6 +55,7 @@
             />
 
         <ImageView
+            android:id="@+id/game_room_send_message"
             android:layout_width="30dp"
             android:layout_height="30dp"
             android:layout_gravity="center_vertical"

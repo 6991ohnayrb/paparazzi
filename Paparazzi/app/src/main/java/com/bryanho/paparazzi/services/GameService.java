@@ -2,8 +2,10 @@ package com.bryanho.paparazzi.services;
 
 import com.bryanho.paparazzi.requests.GetGamesRequest;
 import com.bryanho.paparazzi.requests.LoginRequest;
+import com.bryanho.paparazzi.requests.SendMessageRequest;
 import com.bryanho.paparazzi.responses.GamesResponse;
 import com.bryanho.paparazzi.responses.LoginResponse;
+import com.bryanho.paparazzi.responses.SendMessageResponse;
 
 import io.reactivex.Observable;
 import retrofit2.http.Body;
@@ -16,4 +18,7 @@ public interface GameService {
 
     @POST("getgames")
     Observable<GamesResponse> getGames(@Body GetGamesRequest getGamesRequest);
+
+    @POST("sendmessage")
+    Observable<SendMessageResponse> sendMessage(@Body SendMessageRequest message);
 }
