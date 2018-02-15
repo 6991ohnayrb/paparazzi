@@ -2,14 +2,15 @@ package com.bryanho.paparazzi.objects;
 
 import com.bryanho.paparazzi.util.FacebookUtil;
 import com.facebook.Profile;
+import com.google.gson.annotations.SerializedName;
 
 import lombok.Data;
 
 @Data
 public class Player {
-    private String facebookUserId;
-    private String firstName;
-    private String lastName;
+    @SerializedName("facebookUserId") private String facebookUserId;
+    @SerializedName("firstName") private String firstName;
+    @SerializedName("lastName") private String lastName;
 
     // Creates default player with current profile information
     public Player() {

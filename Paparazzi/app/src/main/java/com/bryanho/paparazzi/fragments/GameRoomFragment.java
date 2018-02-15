@@ -65,19 +65,7 @@ public class GameRoomFragment extends PaparazziFragment {
     }
 
     private void populateMessages() {
-        // TODO: Uncomment below line for correct messages for each Game
-        // final List<Message> messages = currentGame.getMessages();
-        final List<Message> messages = new ArrayList<>();
-
-        for (int i = 0; i < 50; i++) {
-            final String message = "Message" + i;
-            if (Math.random() < 0.5) {
-                messages.add(new Message(new Player(), message));
-            } else {
-                messages.add(new Message(new Player("playerID"), message));
-            }
-        }
-
+        final List<Message> messages = currentGame.getMessages();
         final Context context = getContext();
         if (context != null) {
             final GameRoomMessageAdapter gameRoomMessageAdapter = new GameRoomMessageAdapter(context, messages);

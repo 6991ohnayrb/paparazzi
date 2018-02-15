@@ -1,12 +1,14 @@
 package com.bryanho.paparazzi.objects;
 
+import com.google.gson.annotations.SerializedName;
+
 import lombok.Data;
 
 @Data
 public class GameInfo {
-    private String gameRoomName;
-    private int playerCount;
-    private int gameDuration;
+    @SerializedName("gameRoomName") private String gameRoomName;
+    @SerializedName("playerCount") private int playerCount;
+    @SerializedName("gameDuration") private int gameDuration;
 
     GameInfo(String gameRoomName, int playerCount, int gameDuration) {
         this.gameRoomName = gameRoomName;

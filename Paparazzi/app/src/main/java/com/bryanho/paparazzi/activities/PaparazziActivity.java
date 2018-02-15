@@ -19,7 +19,7 @@ import retrofit2.converter.gson.GsonConverterFactory;
 
 public abstract class PaparazziActivity extends AppCompatActivity {
 
-    private static final String baseUrl = "http://131.179.50.253:8000";
+    private static final String baseUrl = "http://169.232.238.57:8000";
     public GameService gameService;
 
     public PaparazziActivity() {
