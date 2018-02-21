@@ -3,7 +3,6 @@ package com.bryanho.paparazzi.responses;
 import com.bryanho.paparazzi.objects.Message;
 import com.google.gson.annotations.SerializedName;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import lombok.Data;

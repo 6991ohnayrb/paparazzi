@@ -2,7 +2,6 @@ package com.bryanho.paparazzi.fragments;
 
 import android.app.Activity;
 import android.content.Context;
-import android.databinding.DataBindingUtil;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.annotation.NonNull;
@@ -18,7 +17,6 @@ import android.widget.Toast;
 import com.bryanho.paparazzi.R;
 import com.bryanho.paparazzi.activities.MainActivity;
 import com.bryanho.paparazzi.adapters.GameRoomMessageAdapter;
-import com.bryanho.paparazzi.databinding.FragmentGameRoomBinding;
 import com.bryanho.paparazzi.objects.Game;
 import com.bryanho.paparazzi.objects.GameInfo;
 import com.bryanho.paparazzi.objects.Message;
@@ -27,7 +25,6 @@ import com.bryanho.paparazzi.requests.GetMessagesRequest;
 import com.bryanho.paparazzi.requests.SendMessageRequest;
 import com.bryanho.paparazzi.responses.GetMessagesResponse;
 import com.bryanho.paparazzi.responses.SendMessageResponse;
-import com.bryanho.paparazzi.viewmodel.GameRoomViewModel;
 
 import java.util.List;
 import java.util.concurrent.locks.ReentrantLock;
@@ -49,7 +46,6 @@ public class GameRoomFragment extends PaparazziFragment {
     @BindView(R.id.game_room_message_text) EditText gameRoomMessageText;
 
     private Game currentGame;
-    private GameRoomViewModel gameRoomViewModel = new GameRoomViewModel();
 
     public GameRoomFragment() {
     }
@@ -63,17 +59,13 @@ public class GameRoomFragment extends PaparazziFragment {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, Bundle savedInstanceState) {
         super.onCreateView(inflater, container, savedInstanceState);
 
-        final FragmentGameRoomBinding gameRoomFragmentViewBinding = DataBindingUtil.inflate(inflater, R.layout.fragment_game_room, container, false);
-        gameRoomFragmentViewBinding.setGameRoomViewModel(gameRoomViewModel);
-
-        final View view = gameRoomFragmentViewBinding.getRoot();
+        final View view = inflater.inflate(R.layout.fragment_game_room, container, false);
         ButterKnife.bind(this, view);
         setupGameService();
 
         final Activity activity = getActivity();
-        if (activity instanceof MainActivity && ((MainActivity)activity).currentGame != null) {
+        if (activity instanceof MainActivity && ((MainActivity) activity).currentGame != null) {
             currentGame = ((MainActivity) activity).currentGame;
-            gameRoomViewModel.setMessages(currentGame.getMessages());
         } else {
             throw new IllegalStateException("Parent activity must be MainActivity and currentGame cannot be null!");
         }
@@ -84,7 +76,7 @@ public class GameRoomFragment extends PaparazziFragment {
         }
 
         populateMessages();
-//        startMessageFetching();
+        startMessageFetching();
 
         return view;
     }
@@ -163,8 +155,13 @@ public class GameRoomFragment extends PaparazziFragment {
                             @Override
                             public void accept(GetMessagesResponse getMessagesResponse) throws Exception {
                                 reentrantLock.unlock();
-                                if (getMessagesResponse != null) {
-
+                                if (getMessagesResponse != null && getMessagesResponse.getMessages() != null) {
+                                    final List<Message> currentMessages = currentGame.getMessages();
+                                    final List<Message> responseMessages = getMessagesResponse.getMessages();
+                                    if (currentMessages == null || !currentMessages.equals(responseMessages)) {
+                                        currentGame.setMessages(responseMessages);
+                                        populateMessages();
+                                    }
                                 }
                             }
                         });
