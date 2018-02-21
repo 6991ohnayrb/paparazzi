@@ -2,9 +2,10 @@
 1/30/2018
 - Able to log in to application with Facebook log-in information
 
-2/6/2018
--
-
 2/14/2018
 - Able to log in and view messages in chat bubbles and navigate between rooms
 . Able to type message and try to send it
+
+2/20/2018
+- Able to create new game rooms
+- Send messages and see what messages you got in the chat room
