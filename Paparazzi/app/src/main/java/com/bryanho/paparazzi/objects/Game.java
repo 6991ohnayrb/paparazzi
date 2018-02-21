@@ -9,7 +9,7 @@ import lombok.Data;
 
 @Data
 public class Game {
-    @SerializedName("gameId") private int gameId;
+    @SerializedName("gameId") private long gameId;
     @SerializedName("gameInfo") private GameInfo gameInfo;
     @SerializedName("player") private List<Player> players = new ArrayList<>();
     @SerializedName("messages") private List<Message> messages = new ArrayList<>();

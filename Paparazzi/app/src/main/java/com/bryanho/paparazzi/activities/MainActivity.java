@@ -3,6 +3,7 @@ package com.bryanho.paparazzi.activities;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.annotation.Nullable;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.widget.Toolbar;
@@ -40,6 +41,8 @@ import io.reactivex.schedulers.Schedulers;
 
 public class MainActivity extends PaparazziActivity {
 
+    private static final int FETCH_GAMES_INTERVAL_MILLISECONDS = 500;
+
     @BindView(R.id.toolbar) Toolbar toolbar;
     @BindView(R.id.drawer_layout) DrawerLayout drawerLayout;
     @BindView(R.id.navigation_drawer) LinearLayout navigationDrawer;
@@ -47,7 +50,7 @@ public class MainActivity extends PaparazziActivity {
     @BindView(R.id.menu_games_list) ListView gamesList;
 
     public Game currentGame;
-    public List<Game> games;
+    public List<Game> games = new ArrayList<>();
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -57,7 +60,7 @@ public class MainActivity extends PaparazziActivity {
         ButterKnife.bind(this);
         setToolbarLeftIcon();
         setGreeting();
-        fetchGames();
+        startGameRoomFetching();
         setMenuGamesList();
 
         // TODO: Remove this after testing HTTP request
@@ -89,6 +92,18 @@ public class MainActivity extends PaparazziActivity {
         }
     }
 
+    private void startGameRoomFetching() {
+        final Handler handler = new Handler();
+        final Runnable runnable = new Runnable() {
+            @Override
+            public void run() {
+                fetchGames();
+                handler.postDelayed(this, FETCH_GAMES_INTERVAL_MILLISECONDS);
+            }
+        };
+        handler.post(runnable);
+    }
+
     private void fetchGames() {
         final Observable<GamesResponse> gamesResponseObservable = gameService.getGames(new GetGamesRequest(new Player()));
         gamesResponseObservable
@@ -103,9 +118,12 @@ public class MainActivity extends PaparazziActivity {
                 .subscribe(new Consumer<GamesResponse>() {
                     @Override
                     public void accept(GamesResponse gamesResponse) throws Exception {
-                        if (gamesResponse != null) {
-                            games = gamesResponse.getGames();
-                            setMenuGamesList();
+                        if (gamesResponse != null && gamesResponse.getGames() != null) {
+                            final List<Game> responseGames = gamesResponse.getGames();
+                            if (games == null || !games.equals(responseGames)) {
+                                games = gamesResponse.getGames();
+                                setMenuGamesList();
+                            }
                         }
                     }
                 });
