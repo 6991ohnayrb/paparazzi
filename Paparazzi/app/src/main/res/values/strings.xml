@@ -19,5 +19,6 @@
     <string name="my_games">My Games</string>
     <string name="nearby_games">Nearby Games</string>
     <string name="please_enter_valid_values">Please enter valid values!</string>
+    <string name="send_message_error">There was an issue sending your message, please try again.</string>
     <string name="settings">Settings</string>
 </resources>

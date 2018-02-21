@@ -7,5 +7,5 @@ import lombok.Data;
 @Data
 public class SendMessageResponse {
     @SerializedName("messagestatus") private String messageStatus;
-    @SerializedName("timestamp") private int timestamp;
+    @SerializedName("timestamp") private long timestamp;
 }

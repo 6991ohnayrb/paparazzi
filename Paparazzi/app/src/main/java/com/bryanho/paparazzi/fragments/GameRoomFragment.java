@@ -4,27 +4,24 @@ import android.app.Activity;
 import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 
-import com.bryanho.paparazzi.adapters.GameRoomMessageAdapter;
-import com.bryanho.paparazzi.activities.MainActivity;
 import com.bryanho.paparazzi.R;
+import com.bryanho.paparazzi.activities.MainActivity;
+import com.bryanho.paparazzi.adapters.GameRoomMessageAdapter;
 import com.bryanho.paparazzi.objects.Game;
 import com.bryanho.paparazzi.objects.GameInfo;
 import com.bryanho.paparazzi.objects.Message;
 import com.bryanho.paparazzi.objects.Player;
-import com.bryanho.paparazzi.requests.GetGamesRequest;
 import com.bryanho.paparazzi.requests.SendMessageRequest;
-import com.bryanho.paparazzi.responses.GamesResponse;
 import com.bryanho.paparazzi.responses.SendMessageResponse;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.BindView;
@@ -34,7 +31,6 @@ import io.reactivex.Observable;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.functions.Consumer;
 import io.reactivex.schedulers.Schedulers;
-import retrofit2.http.Body;
 
 public class GameRoomFragment extends PaparazziFragment {
 
@@ -116,7 +112,11 @@ public class GameRoomFragment extends PaparazziFragment {
                     .subscribe(new Consumer<SendMessageResponse>() {
                         @Override
                         public void accept(SendMessageResponse sendMessageResponse) throws Exception {
-
+                            if (sendMessageResponse != null && "success".equals(sendMessageResponse.getMessageStatus())) {
+                                gameRoomMessageText.setText("");
+                            } else {
+                                Toast.makeText(getContext(), getString(R.string.send_message_error), Toast.LENGTH_SHORT).show();
+                            }
                         }
                     });
         }
