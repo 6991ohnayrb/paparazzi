@@ -7,10 +7,10 @@ import lombok.Data;
 
 @Data
 public class SendMessageRequest {
-    @SerializedName("GameId") private int gameId;
+    @SerializedName("GameId") private long gameId;
     @SerializedName("Message") private Message message;
 
-    public SendMessageRequest(int gameId, Message message) {
+    public SendMessageRequest(long gameId, Message message) {
         this.gameId = gameId;
         this.message = message;
     }
