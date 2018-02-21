@@ -21,13 +21,10 @@ import com.bryanho.paparazzi.objects.Game;
 import com.bryanho.paparazzi.objects.GameInfo;
 import com.bryanho.paparazzi.objects.Message;
 import com.bryanho.paparazzi.objects.Player;
-import com.bryanho.paparazzi.requests.GetMessagesRequest;
 import com.bryanho.paparazzi.requests.SendMessageRequest;
-import com.bryanho.paparazzi.responses.GetMessagesResponse;
 import com.bryanho.paparazzi.responses.SendMessageResponse;
 
 import java.util.List;
-import java.util.concurrent.locks.ReentrantLock;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -132,39 +129,20 @@ public class GameRoomFragment extends PaparazziFragment {
     }
 
     private void startMessageFetching() {
-        final GetMessagesRequest getMessagesRequest = new GetMessagesRequest(currentGame);
-        final Observable<GetMessagesResponse> getMessagesRequestObservable = gameService.getMessages(getMessagesRequest);
-        final ReentrantLock reentrantLock = new ReentrantLock();
-
         final Handler handler = new Handler();
         final Runnable runnable = new Runnable() {
             @Override
             public void run() {
-                reentrantLock.lock();
-                getMessagesRequestObservable
-                        .subscribeOn(Schedulers.io())
-                        .observeOn(AndroidSchedulers.mainThread())
-                        .doOnError(new Consumer<Throwable>() {
-                            @Override
-                            public void accept(Throwable throwable) throws Exception {
-                                reentrantLock.unlock();
-                                System.err.println(throwable.getMessage());
-                            }
-                        })
-                        .subscribe(new Consumer<GetMessagesResponse>() {
-                            @Override
-                            public void accept(GetMessagesResponse getMessagesResponse) throws Exception {
-                                reentrantLock.unlock();
-                                if (getMessagesResponse != null && getMessagesResponse.getMessages() != null) {
-                                    final List<Message> currentMessages = currentGame.getMessages();
-                                    final List<Message> responseMessages = getMessagesResponse.getMessages();
-                                    if (currentMessages == null || !currentMessages.equals(responseMessages)) {
-                                        currentGame.setMessages(responseMessages);
-                                        populateMessages();
-                                    }
-                                }
-                            }
-                        });
+                final Activity activity = getActivity();
+                if (activity instanceof MainActivity) {
+                    final MainActivity mainActivity = (MainActivity) activity;
+                    for (Game game : mainActivity.games) {
+                        if (game.getGameId() == currentGame.getGameId() && !game.equals(currentGame)) {
+                            currentGame = game;
+                            populateMessages();
+                        }
+                    }
+                }
                 handler.postDelayed(this, FETCH_MESSAGES_INTERVAL_MILLISECONDS);
             }
         };
