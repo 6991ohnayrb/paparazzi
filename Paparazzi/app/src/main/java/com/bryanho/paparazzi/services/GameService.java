@@ -1,9 +1,11 @@
 package com.bryanho.paparazzi.services;
 
 import com.bryanho.paparazzi.requests.GetGamesRequest;
+import com.bryanho.paparazzi.requests.GetMessagesRequest;
 import com.bryanho.paparazzi.requests.LoginRequest;
 import com.bryanho.paparazzi.requests.SendMessageRequest;
 import com.bryanho.paparazzi.responses.GamesResponse;
+import com.bryanho.paparazzi.responses.GetMessagesResponse;
 import com.bryanho.paparazzi.responses.LoginResponse;
 import com.bryanho.paparazzi.responses.SendMessageResponse;
 
@@ -18,6 +20,9 @@ public interface GameService {
 
     @POST("getgames")
     Observable<GamesResponse> getGames(@Body GetGamesRequest getGamesRequest);
+
+    @POST("getmessages")
+    Observable<GetMessagesResponse> getMessages(@Body GetMessagesRequest getMessagesRequest);
 
     @POST("sendmessage")
     Observable<SendMessageResponse> sendMessage(@Body SendMessageRequest message);

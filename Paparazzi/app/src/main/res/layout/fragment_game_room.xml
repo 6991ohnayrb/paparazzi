@@ -1,69 +1,85 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:orientation="vertical"
-    >
+<layout xmlns:android="http://schemas.android.com/apk/res/android">
 
-    <TextView
-        android:id="@+id/game_room_name"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="@color/colorPrimaryLight"
-        android:fontFamily="@font/montserrat_bold"
-        android:padding="10dp"
-        android:textAlignment="center"
-        android:textColor="@color/white"
-        android:textSize="24sp"
-        />
+    <data>
 
-    <ListView
-        android:id="@+id/game_room_messages"
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="1"
-        android:paddingEnd="5dp"
-        android:paddingStart="5dp"
-        />
+        <import type="android.view.View" />
+
+        <variable
+            name="gameRoomViewModel"
+            type="com.bryanho.paparazzi.viewmodel.GameRoomViewModel"
+            />
+    </data>
+
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="@color/colorPrimaryLight"
-        android:orientation="horizontal"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
         >
 
-        <ImageView
-            android:layout_width="30dp"
-            android:layout_height="30dp"
-            android:layout_gravity="center_vertical"
-            android:layout_margin="10dp"
-            android:src="@drawable/ic_camera"
-            android:tint="@color/white"
-            />
 
-        <EditText
-            android:id="@+id/game_room_message_text"
-            android:layout_width="0dp"
+        <TextView
+            android:id="@+id/game_room_name"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_gravity="center_vertical"
-            android:layout_weight="1"
-            android:hint="@string/enter_your_message"
+            android:background="@color/colorPrimaryLight"
+            android:fontFamily="@font/montserrat_bold"
             android:padding="10dp"
-            android:textColor="@color/black"
-            android:textSize="14sp"
+            android:textAlignment="center"
+            android:textColor="@color/white"
+            android:textSize="24sp"
             />
 
-        <ImageView
-            android:id="@+id/game_room_send_message"
-            android:layout_width="30dp"
-            android:layout_height="30dp"
-            android:layout_gravity="center_vertical"
-            android:layout_margin="10dp"
-            android:src="@drawable/ic_send"
-            android:tint="@color/white"
+        <ListView
+            android:id="@+id/game_room_messages"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            android:paddingEnd="5dp"
+            android:paddingStart="5dp"
             />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/colorPrimaryLight"
+            android:orientation="horizontal"
+            >
+
+            <ImageView
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:layout_gravity="center_vertical"
+                android:layout_margin="10dp"
+                android:src="@drawable/ic_camera"
+                android:tint="@color/white"
+                />
+
+            <EditText
+                android:id="@+id/game_room_message_text"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:layout_weight="1"
+                android:hint="@string/enter_your_message"
+                android:padding="10dp"
+                android:textColor="@color/black"
+                android:textSize="14sp"
+                />
+
+            <ImageView
+                android:id="@+id/game_room_send_message"
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:layout_gravity="center_vertical"
+                android:layout_margin="10dp"
+                android:src="@drawable/ic_send"
+                android:tint="@color/white"
+                />
+
+        </LinearLayout>
 
     </LinearLayout>
 
-</LinearLayout>
+</layout>
