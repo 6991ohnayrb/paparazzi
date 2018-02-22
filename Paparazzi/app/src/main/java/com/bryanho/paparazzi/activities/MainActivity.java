@@ -1,7 +1,6 @@
 package com.bryanho.paparazzi.activities;
 
 import android.content.Context;
-import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.annotation.Nullable;
@@ -12,20 +11,18 @@ import android.widget.AdapterView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.bryanho.paparazzi.R;
 import com.bryanho.paparazzi.adapters.GameAdapter;
 import com.bryanho.paparazzi.fragments.GameRoomFragment;
+import com.bryanho.paparazzi.fragments.JoinGameFragment;
 import com.bryanho.paparazzi.fragments.MyGamesFragment;
 import com.bryanho.paparazzi.fragments.NewGameFragment;
 import com.bryanho.paparazzi.fragments.SettingsFragment;
 import com.bryanho.paparazzi.objects.Game;
-import com.bryanho.paparazzi.objects.LoginStatus;
 import com.bryanho.paparazzi.objects.Player;
 import com.bryanho.paparazzi.requests.GetGamesRequest;
 import com.bryanho.paparazzi.responses.GamesResponse;
-import com.bryanho.paparazzi.responses.LoginResponse;
 import com.bryanho.paparazzi.util.FacebookUtil;
 
 import java.util.ArrayList;
@@ -44,6 +41,7 @@ public class MainActivity extends PaparazziActivity {
     private static final int FETCH_GAMES_INTERVAL_MILLISECONDS = 500;
 
     @BindView(R.id.toolbar) Toolbar toolbar;
+    @BindView(R.id.toolbar_title) TextView toolbarTitle;
     @BindView(R.id.drawer_layout) DrawerLayout drawerLayout;
     @BindView(R.id.navigation_drawer) LinearLayout navigationDrawer;
     @BindView(R.id.user_greeting) TextView userGreeting;
@@ -65,6 +63,10 @@ public class MainActivity extends PaparazziActivity {
 
         // TODO: Remove this after testing HTTP request
         navigateToFragment(MyGamesFragment.newInstance());
+    }
+
+    public void setToolbarTitle(String string) {
+        toolbarTitle.setText(string);
     }
 
     private void setToolbarLeftIcon() {
@@ -153,6 +155,12 @@ public class MainActivity extends PaparazziActivity {
     @OnClick(R.id.menu_new_game)
     public void menuNewGame() {
         navigateToFragment(NewGameFragment.newInstance());
+        drawerLayout.closeDrawer(navigationDrawer);
+    }
+
+    @OnClick(R.id.menu_join_game)
+    public void menuJoinGame() {
+        navigateToFragment(JoinGameFragment.newInstance());
         drawerLayout.closeDrawer(navigationDrawer);
     }
 
