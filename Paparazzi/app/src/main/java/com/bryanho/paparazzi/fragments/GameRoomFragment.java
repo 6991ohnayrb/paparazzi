@@ -12,6 +12,7 @@ import android.provider.MediaStore;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.content.ContextCompat;
+import android.util.Base64;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -33,6 +34,7 @@ import com.bryanho.paparazzi.objects.Player;
 import com.bryanho.paparazzi.requests.SendMessageRequest;
 import com.bryanho.paparazzi.responses.SendMessageResponse;
 
+import java.io.ByteArrayOutputStream;
 import java.util.List;
 
 import butterknife.BindView;
@@ -57,6 +59,7 @@ public class GameRoomFragment extends PaparazziFragment {
 
     private Game currentGame;
     private MainActivity mainActivity;
+    private Bitmap currentBitmap;
 
     public GameRoomFragment() {
     }
@@ -124,33 +127,46 @@ public class GameRoomFragment extends PaparazziFragment {
 
     @OnClick(R.id.game_room_send_message)
     public void sendMessage() {
-        final String messageText = gameRoomMessageText.getText().toString();
-        if (messageText.length() != 0) {
-            final SendMessageRequest sendMessageRequest = new SendMessageRequest(
+        SendMessageRequest sendMessageRequest;
+        if (currentBitmap != null) {
+            final ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
+            currentBitmap.compress(Bitmap.CompressFormat.JPEG, 70, byteArrayOutputStream);
+            byte[] b = byteArrayOutputStream.toByteArray();
+            final String imageString = Base64.encodeToString(b, Base64.DEFAULT);
+            sendMessageRequest = new SendMessageRequest(currentGame.getGameId(),
+                    new Message(new Player(), null, imageString));
+        } else {
+            final String messageText = gameRoomMessageText.getText().toString();
+            sendMessageRequest = new SendMessageRequest(
                     currentGame.getGameId(),
-                    new Message(new Player(), messageText)
+                    new Message(new Player(), messageText, null)
             );
-            final Observable<SendMessageResponse> sendMessageResponseObservable = gameService.sendMessage(sendMessageRequest);
-            sendMessageResponseObservable
-                    .subscribeOn(Schedulers.io())
-                    .observeOn(AndroidSchedulers.mainThread())
-                    .doOnError(new Consumer<Throwable>() {
-                        @Override
-                        public void accept(Throwable throwable) throws Exception {
-                            System.err.println(throwable.getMessage());
-                        }
-                    })
-                    .subscribe(new Consumer<SendMessageResponse>() {
-                        @Override
-                        public void accept(SendMessageResponse sendMessageResponse) throws Exception {
-                            if (sendMessageResponse != null && "success".equals(sendMessageResponse.getMessageStatus())) {
-                                gameRoomMessageText.setText("");
-                            } else {
-                                Toast.makeText(getContext(), getString(R.string.send_message_error), Toast.LENGTH_SHORT).show();
-                            }
-                        }
-                    });
         }
+
+        final Observable<SendMessageResponse> sendMessageResponseObservable = gameService.sendMessage(sendMessageRequest);
+        sendMessageResponseObservable
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .doOnError(new Consumer<Throwable>() {
+                    @Override
+                    public void accept(Throwable throwable) throws Exception {
+                        System.err.println(throwable.getMessage());
+                    }
+                })
+                .subscribe(new Consumer<SendMessageResponse>() {
+                    @Override
+                    public void accept(SendMessageResponse sendMessageResponse) throws Exception {
+                        if (sendMessageResponse != null && "success".equals(sendMessageResponse.getMessageStatus())) {
+                            gameRoomMessageText.setText("");
+                            attachedImage.setImageBitmap(null);
+                            currentBitmap = null;
+                            attachedImageLayout.setVisibility(View.GONE);
+                            messageLayout.setVisibility(View.VISIBLE);
+                        } else {
+                            Toast.makeText(getContext(), getString(R.string.send_message_error), Toast.LENGTH_SHORT).show();
+                        }
+                    }
+                });
     }
 
     private void startMessageFetching() {
@@ -214,6 +230,7 @@ public class GameRoomFragment extends PaparazziFragment {
 
     private void showBitmap(Bitmap bitmap) {
         attachedImage.setImageBitmap(bitmap);
+        currentBitmap = bitmap;
         attachedImageLayout.setVisibility(View.VISIBLE);
         messageLayout.setVisibility(View.GONE);
     }
@@ -221,6 +238,7 @@ public class GameRoomFragment extends PaparazziFragment {
     @OnClick(R.id.attached_image_x)
     public void removeAttachedImage() {
         attachedImage.setImageBitmap(null);
+        currentBitmap = null;
         attachedImageLayout.setVisibility(View.GONE);
         messageLayout.setVisibility(View.VISIBLE);
     }

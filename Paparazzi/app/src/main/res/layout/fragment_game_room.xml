@@ -53,8 +53,9 @@
 
             <LinearLayout
                 android:id="@+id/message_layout"
-                android:layout_width="match_parent"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
+                android:layout_weight="1"
                 >
 
                 <ImageView
@@ -79,17 +80,17 @@
                     android:textSize="14sp"
                     />
 
-                <ImageView
-                    android:id="@+id/game_room_send_message"
-                    android:layout_width="30dp"
-                    android:layout_height="30dp"
-                    android:layout_gravity="center_vertical"
-                    android:layout_margin="10dp"
-                    android:src="@drawable/ic_send"
-                    android:tint="@color/white"
-                    />
-
             </LinearLayout>
+
+            <ImageView
+                android:id="@+id/game_room_send_message"
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:layout_gravity="center_vertical"
+                android:layout_margin="10dp"
+                android:src="@drawable/ic_send"
+                android:tint="@color/white"
+                />
 
         </LinearLayout>
 
