@@ -1,17 +1,25 @@
 package com.bryanho.paparazzi.fragments;
 
+import android.Manifest;
 import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.os.Handler;
+import android.provider.MediaStore;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.v4.content.ContextCompat;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.ListView;
+import android.widget.RelativeLayout;
 import android.widget.Toast;
 
 import com.bryanho.paparazzi.R;
@@ -37,10 +45,15 @@ import io.reactivex.schedulers.Schedulers;
 
 public class GameRoomFragment extends PaparazziFragment {
 
+    private static final int CAMERA_RESULT_CODE = 0;
+    private static final int CAMERA_PERMISSION_REQUEST = 1;
     private static final int FETCH_MESSAGES_INTERVAL_MILLISECONDS = 500;
 
     @BindView(R.id.game_room_messages) ListView messageList;
     @BindView(R.id.game_room_message_text) EditText gameRoomMessageText;
+    @BindView(R.id.attached_image_layout) RelativeLayout attachedImageLayout;
+    @BindView(R.id.attached_image) ImageView attachedImage;
+    @BindView(R.id.message_layout) LinearLayout messageLayout;
 
     private Game currentGame;
     private MainActivity mainActivity;
@@ -159,5 +172,56 @@ public class GameRoomFragment extends PaparazziFragment {
             }
         };
         handler.post(runnable);
+    }
+
+    @OnClick(R.id.add_image)
+    public void addImage() {
+        final Context context = getContext();
+        if (context != null) {
+            if (ContextCompat.checkSelfPermission(context, Manifest.permission.CAMERA) == PackageManager.PERMISSION_GRANTED) {
+                final Intent cameraIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+                startActivityForResult(cameraIntent, CAMERA_RESULT_CODE);
+            } else {
+                requestPermissions(new String[]{Manifest.permission.CAMERA}, CAMERA_PERMISSION_REQUEST);
+            }
+        }
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+
+        final boolean permissionGranted = grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED;
+        if (requestCode == CAMERA_PERMISSION_REQUEST && permissionGranted) {
+            addImage();
+        }
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (resultCode == Activity.RESULT_CANCELED) {
+            return;
+        }
+
+        if (requestCode == CAMERA_RESULT_CODE && resultCode == Activity.RESULT_OK && data != null && data.getExtras() != null) {
+            final Bitmap bitmap = (Bitmap) data.getExtras().get("data");
+            if (bitmap != null) {
+                showBitmap(bitmap);
+            }
+        }
+    }
+
+    private void showBitmap(Bitmap bitmap) {
+        attachedImage.setImageBitmap(bitmap);
+        attachedImageLayout.setVisibility(View.VISIBLE);
+        messageLayout.setVisibility(View.GONE);
+    }
+
+    @OnClick(R.id.attached_image_x)
+    public void removeAttachedImage() {
+        attachedImage.setImageBitmap(null);
+        attachedImageLayout.setVisibility(View.GONE);
+        messageLayout.setVisibility(View.VISIBLE);
     }
 }
