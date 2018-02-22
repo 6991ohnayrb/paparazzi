@@ -15,17 +15,22 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.bryanho.paparazzi.R;
-import com.bryanho.paparazzi.dialog.InviteDialog;
 import com.bryanho.paparazzi.dialog.RateImageDialog;
+import com.bryanho.paparazzi.objects.Game;
+import com.bryanho.paparazzi.objects.Image;
 import com.bryanho.paparazzi.objects.Message;
+import com.bryanho.paparazzi.objects.Player;
 import com.squareup.picasso.Picasso;
 
 import java.util.List;
 
 public class GameRoomMessageAdapter extends ArrayAdapter<Message> {
 
-    public GameRoomMessageAdapter(@NonNull Context context, @NonNull List<Message> messages) {
+    private Game currentGame;
+
+    public GameRoomMessageAdapter(@NonNull Context context, @NonNull List<Message> messages, @NonNull Game currentGame) {
         super(context, 0, messages);
+        this.currentGame = currentGame;
     }
 
     @NonNull
@@ -50,9 +55,12 @@ public class GameRoomMessageAdapter extends ArrayAdapter<Message> {
                 if (message.getImage() != null) {
                     messageFromSelf.setVisibility(View.GONE);
                     imageFromSelf.setVisibility(View.VISIBLE);
-                    final Bitmap bitmap = getBitmapFromString(message.getImage());
-                    if (bitmap != null) {
-                        imageFromSelf.setImageBitmap(bitmap);
+                    final Image image = message.getImage();
+                    if (image != null) {
+                        final Bitmap bitmap = getBitmapFromString(image.getImageContent());
+                        if (bitmap != null) {
+                            imageFromSelf.setImageBitmap(bitmap);
+                        }
                     }
                 } else {
                     messageFromSelf.setVisibility(View.VISIBLE);
@@ -67,16 +75,21 @@ public class GameRoomMessageAdapter extends ArrayAdapter<Message> {
                 if (message.getImage() != null) {
                     imageFromOther.setVisibility(View.VISIBLE);
                     messageFromOther.setVisibility(View.GONE);
-                    final Bitmap bitmap = getBitmapFromString(message.getImage());
-                    if (bitmap != null) {
-                        imageFromOther.setImageBitmap(bitmap);
-                        imageFromOther.setOnClickListener(new View.OnClickListener() {
-                            @Override
-                            public void onClick(View v) {
-                                // TODO: Get accurate previousRating value
-                                new RateImageDialog(getContext(), bitmap, 0).show();
-                            }
-                        });
+                    final Image image = message.getImage();
+                    if (image != null) {
+                        final Bitmap bitmap = getBitmapFromString(image.getImageContent());
+                        if (bitmap != null) {
+                            final int index = currentGame.getPlayers().indexOf(new Player());
+                            final int myRating = index == -1 ? 0 : image.getRatings().get(index);
+
+                            imageFromOther.setImageBitmap(bitmap);
+                            imageFromOther.setOnClickListener(new View.OnClickListener() {
+                                @Override
+                                public void onClick(View v) {
+                                    new RateImageDialog(getContext(), bitmap, myRating).show();
+                                }
+                            });
+                        }
                     }
                 } else {
                     messageFromOther.setText(message.getMessage());
