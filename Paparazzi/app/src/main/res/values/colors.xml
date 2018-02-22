@@ -13,4 +13,5 @@
     <color name="lightMaroon">#800000</color>
     <color name="darkMaroon">#400000</color>
     <color name="transparent">#00000000</color>
+    <color name="gold">#FFD700</color>
 </resources>

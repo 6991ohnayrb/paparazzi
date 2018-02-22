@@ -15,6 +15,8 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.bryanho.paparazzi.R;
+import com.bryanho.paparazzi.dialog.InviteDialog;
+import com.bryanho.paparazzi.dialog.RateImageDialog;
 import com.bryanho.paparazzi.objects.Message;
 import com.squareup.picasso.Picasso;
 
@@ -44,7 +46,7 @@ public class GameRoomMessageAdapter extends ArrayAdapter<Message> {
         final ImageView messageFromOtherImage = convertView.findViewById(R.id.message_from_other_image);
 
         if (message != null && messageFromSelf != null && imageFromSelf != null && messageFromOther != null) {
-            if (message.isFromMyself()) {
+            if (!message.isFromMyself()) {
                 if (message.getImage() != null) {
                     messageFromSelf.setVisibility(View.GONE);
                     imageFromSelf.setVisibility(View.VISIBLE);
@@ -68,6 +70,13 @@ public class GameRoomMessageAdapter extends ArrayAdapter<Message> {
                     final Bitmap bitmap = getBitmapFromString(message.getImage());
                     if (bitmap != null) {
                         imageFromOther.setImageBitmap(bitmap);
+                        imageFromOther.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
+                                // TODO: Get accurate previousRating value
+                                new RateImageDialog(getContext(), bitmap, 0).show();
+                            }
+                        });
                     }
                 } else {
                     messageFromOther.setText(message.getMessage());
