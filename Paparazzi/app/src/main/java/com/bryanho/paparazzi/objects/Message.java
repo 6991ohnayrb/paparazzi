@@ -1,7 +1,5 @@
 package com.bryanho.paparazzi.objects;
 
-import android.graphics.Bitmap;
-
 import com.google.gson.annotations.SerializedName;
 
 import lombok.Data;
@@ -12,9 +10,10 @@ public class Message {
     @SerializedName("message") private String message;
     @SerializedName("image") private String image;
 
-    public Message(Player sentFrom, String message) {
+    public Message(Player sentFrom, String message, String image) {
         this.sentFrom = sentFrom;
         this.message = message;
+        this.image = image;
     }
 
     public boolean isFromMyself() {
