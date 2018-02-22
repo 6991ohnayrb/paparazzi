@@ -26,33 +26,14 @@
         android:visibility="gone"
         />
 
-    <LinearLayout
+    <TextView
+        style="@style/NavigationMenuItem"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        >
-
-        <TextView
-            style="@style/NavigationMenuItem"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:fontFamily="@font/montserrat_regular"
-            android:text="@string/my_games"
-            android:textSize="14sp"
-            />
-
-        <ImageView
-            android:id="@+id/menu_new_game"
-            android:layout_width="30dp"
-            android:layout_height="30dp"
-            android:layout_gravity="center_vertical"
-            android:layout_marginEnd="10dp"
-            android:background="@drawable/ic_new_game"
-            android:backgroundTint="@color/darkGray"
-            />
-
-    </LinearLayout>
+        android:fontFamily="@font/montserrat_regular"
+        android:text="@string/my_games"
+        android:textSize="14sp"
+        />
 
     <ListView
         android:id="@+id/menu_games_list"
@@ -64,6 +45,60 @@
         android:paddingEnd="0dp"
         android:paddingStart="10dp"
         />
+
+    <LinearLayout
+        android:id="@+id/menu_new_game"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:padding="10dp"
+        >
+
+        <ImageView
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginEnd="10dp"
+            android:layout_marginStart="10dp"
+            android:background="@drawable/ic_new_game"
+            android:backgroundTint="@color/darkGray"
+            />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:text="@string/new_game"
+            />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/menu_join_game"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:padding="10dp"
+        >
+
+        <ImageView
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginEnd="10dp"
+            android:layout_marginStart="10dp"
+            android:background="@drawable/ic_new_game"
+            android:backgroundTint="@color/darkGray"
+            />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:text="@string/join_game"
+            />
+
+    </LinearLayout>
 
     <TextView
         android:id="@+id/menu_settings"

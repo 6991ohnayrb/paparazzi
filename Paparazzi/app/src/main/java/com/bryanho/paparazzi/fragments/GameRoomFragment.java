@@ -10,13 +10,14 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.ListView;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import com.bryanho.paparazzi.R;
 import com.bryanho.paparazzi.activities.MainActivity;
 import com.bryanho.paparazzi.adapters.GameRoomMessageAdapter;
+import com.bryanho.paparazzi.dialog.InviteDialog;
 import com.bryanho.paparazzi.objects.Game;
 import com.bryanho.paparazzi.objects.GameInfo;
 import com.bryanho.paparazzi.objects.Message;
@@ -39,10 +40,10 @@ public class GameRoomFragment extends PaparazziFragment {
     private static final int FETCH_MESSAGES_INTERVAL_MILLISECONDS = 500;
 
     @BindView(R.id.game_room_messages) ListView messageList;
-    @BindView(R.id.game_room_name) TextView gameRoomName;
     @BindView(R.id.game_room_message_text) EditText gameRoomMessageText;
 
     private Game currentGame;
+    private MainActivity mainActivity;
 
     public GameRoomFragment() {
     }
@@ -62,14 +63,25 @@ public class GameRoomFragment extends PaparazziFragment {
 
         final Activity activity = getActivity();
         if (activity instanceof MainActivity && ((MainActivity) activity).currentGame != null) {
-            currentGame = ((MainActivity) activity).currentGame;
+            mainActivity = (MainActivity) activity;
+            currentGame = mainActivity.currentGame;
+            final GameInfo gameInfo = currentGame.getGameInfo();
+            if (gameInfo != null) {
+                final String gameRoomName = gameInfo.getGameRoomName();
+                mainActivity.setToolbarTitle(gameRoomName);
+                final ImageView shareIcon = mainActivity.findViewById(R.id.share_icon);
+                if (shareIcon != null) {
+                    shareIcon.setVisibility(View.VISIBLE);
+                    shareIcon.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            new InviteDialog(mainActivity, gameRoomName).show();
+                        }
+                    });
+                }
+            }
         } else {
             throw new IllegalStateException("Parent activity must be MainActivity and currentGame cannot be null!");
-        }
-
-        final GameInfo gameInfo = currentGame.getGameInfo();
-        if (gameInfo != null) {
-            gameRoomName.setText(gameInfo.getGameRoomName());
         }
 
         populateMessages();

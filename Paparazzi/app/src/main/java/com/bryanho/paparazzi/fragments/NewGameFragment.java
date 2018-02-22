@@ -1,5 +1,6 @@
 package com.bryanho.paparazzi.fragments;
 
+import android.app.Activity;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.view.LayoutInflater;
@@ -9,6 +10,7 @@ import android.widget.EditText;
 import android.widget.Toast;
 
 import com.bryanho.paparazzi.R;
+import com.bryanho.paparazzi.activities.MainActivity;
 import com.bryanho.paparazzi.objects.Game;
 import com.bryanho.paparazzi.requests.CreateGameRequest;
 import com.bryanho.paparazzi.responses.CreateGameResponse;
@@ -40,6 +42,13 @@ public class NewGameFragment extends PaparazziFragment {
         super.onCreateView(inflater, container, savedInstanceState);
         final View view = inflater.inflate(R.layout.fragment_new_game, container, false);
         ButterKnife.bind(this, view);
+
+        final Activity activity = getActivity();
+        if (activity instanceof MainActivity) {
+            final MainActivity mainActivity = (MainActivity) activity;
+            mainActivity.setToolbarTitle(getString(R.string.new_game));
+        }
+
         setupGameService();
         return view;
     }
