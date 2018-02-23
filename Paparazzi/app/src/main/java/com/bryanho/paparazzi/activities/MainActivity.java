@@ -22,7 +22,9 @@ import com.bryanho.paparazzi.fragments.SettingsFragment;
 import com.bryanho.paparazzi.objects.Game;
 import com.bryanho.paparazzi.objects.Player;
 import com.bryanho.paparazzi.requests.GetGamesRequest;
+import com.bryanho.paparazzi.requests.PlayerExistsRequest;
 import com.bryanho.paparazzi.responses.GamesResponse;
+import com.bryanho.paparazzi.responses.PlayerExistsResponse;
 import com.bryanho.paparazzi.util.FacebookUtil;
 
 import java.util.ArrayList;
@@ -58,8 +60,7 @@ public class MainActivity extends PaparazziActivity {
         ButterKnife.bind(this);
         setToolbarLeftIcon();
         setGreeting();
-        startGameRoomFetching();
-        setMenuGamesList();
+        checkPlayerExists();
 
         // TODO: Remove this after testing HTTP request
         navigateToFragment(MyGamesFragment.newInstance());
@@ -92,6 +93,30 @@ public class MainActivity extends PaparazziActivity {
         } else {
             userGreeting.setVisibility(View.GONE);
         }
+    }
+
+    private void checkPlayerExists() {
+        final Observable<PlayerExistsResponse> playerExistsResponseObservable = gameService.playerExists(new PlayerExistsRequest(new Player()));
+        playerExistsResponseObservable
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .doOnError(new Consumer<Throwable>() {
+                    @Override
+                    public void accept(Throwable throwable) throws Exception {
+                        System.err.println(throwable.getMessage());
+                    }
+                })
+                .subscribe(new Consumer<PlayerExistsResponse>() {
+                    @Override
+                    public void accept(PlayerExistsResponse playerExistsResponse) throws Exception {
+                        if (playerExistsResponse == null || !"success".equals(playerExistsResponse.getMessageStatus())) {
+                            navigateToActivityNoHistory(LoginActivity.class);
+                        } else {
+                            startGameRoomFetching();
+                            setMenuGamesList();
+                        }
+                    }
+                });
     }
 
     private void startGameRoomFetching() {
