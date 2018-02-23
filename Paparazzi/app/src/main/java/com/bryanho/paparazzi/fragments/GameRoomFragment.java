@@ -110,7 +110,7 @@ public class GameRoomFragment extends PaparazziFragment {
         final List<Message> messages = currentGame.getMessages();
         final Context context = getContext();
         if (context != null) {
-            final GameRoomMessageAdapter gameRoomMessageAdapter = new GameRoomMessageAdapter(context, messages, currentGame);
+            final GameRoomMessageAdapter gameRoomMessageAdapter = new GameRoomMessageAdapter(context, messages, currentGame, gameService);
             messageList.setAdapter(gameRoomMessageAdapter);
             scrollToBottom();
         }

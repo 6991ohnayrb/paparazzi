@@ -20,6 +20,7 @@ import com.bryanho.paparazzi.objects.Game;
 import com.bryanho.paparazzi.objects.Image;
 import com.bryanho.paparazzi.objects.Message;
 import com.bryanho.paparazzi.objects.Player;
+import com.bryanho.paparazzi.services.GameService;
 import com.squareup.picasso.Picasso;
 
 import java.util.List;
@@ -27,10 +28,12 @@ import java.util.List;
 public class GameRoomMessageAdapter extends ArrayAdapter<Message> {
 
     private Game currentGame;
+    private GameService gameService;
 
-    public GameRoomMessageAdapter(@NonNull Context context, @NonNull List<Message> messages, @NonNull Game currentGame) {
+    public GameRoomMessageAdapter(@NonNull Context context, @NonNull List<Message> messages, @NonNull Game currentGame, @NonNull GameService gameService) {
         super(context, 0, messages);
         this.currentGame = currentGame;
+        this.gameService = gameService;
     }
 
     @NonNull
@@ -51,7 +54,7 @@ public class GameRoomMessageAdapter extends ArrayAdapter<Message> {
         final ImageView messageFromOtherImage = convertView.findViewById(R.id.message_from_other_image);
 
         if (message != null && messageFromSelf != null && imageFromSelf != null && messageFromOther != null) {
-            if (!message.isFromMyself()) {
+            if (message.isFromMyself()) {
                 if (message.getImage() != null) {
                     messageFromSelf.setVisibility(View.GONE);
                     imageFromSelf.setVisibility(View.VISIBLE);
@@ -86,7 +89,7 @@ public class GameRoomMessageAdapter extends ArrayAdapter<Message> {
                             imageFromOther.setOnClickListener(new View.OnClickListener() {
                                 @Override
                                 public void onClick(View v) {
-                                    new RateImageDialog(getContext(), bitmap, myRating).show();
+                                    new RateImageDialog(getContext(), bitmap, image.getImageId(), myRating, gameService, currentGame).show();
                                 }
                             });
                         }

@@ -11,7 +11,7 @@ import lombok.Data;
 public class Game {
     @SerializedName("gameId") private long gameId;
     @SerializedName("gameInfo") private GameInfo gameInfo;
-    @SerializedName("player") private List<Player> players = new ArrayList<>();
+    @SerializedName("players") private List<Player> players = new ArrayList<>();
     @SerializedName("messages") private List<Message> messages = new ArrayList<>();
 
     public Game(String gameRoomName, int maximumPlayers, int gameDuration) {
