@@ -10,8 +10,11 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.bryanho.paparazzi.R;
+import com.bryanho.paparazzi.activities.LoginActivity;
 import com.bryanho.paparazzi.activities.MainActivity;
 import com.bryanho.paparazzi.util.FacebookUtil;
+import com.facebook.Profile;
+import com.facebook.ProfileTracker;
 import com.squareup.picasso.Picasso;
 
 import javax.annotation.Nonnull;
@@ -43,6 +46,12 @@ public class SettingsFragment extends PaparazziFragment {
         if (activity instanceof MainActivity) {
             final MainActivity mainActivity = (MainActivity) activity;
             mainActivity.setToolbarTitle(getString(R.string.settings));
+            new ProfileTracker() {
+                @Override
+                protected void onCurrentProfileChanged(Profile oldProfile, Profile currentProfile) {
+                    mainActivity.navigateToActivityNoHistory(LoginActivity.class);
+                }
+            };
         }
 
         setupGameService();

@@ -1,6 +1,8 @@
 package com.bryanho.paparazzi.activities;
 
 import android.content.Context;
+import android.content.Intent;
+import android.net.Uri;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
@@ -46,5 +48,14 @@ public abstract class PaparazziActivity extends AppCompatActivity {
 
     public void initializeStethoscope(Context context) {
         Stetho.initializeWithDefaults(context);
+    }
+
+    public void navigateToActivityNoHistory(Class<? extends PaparazziActivity> activityClass) {
+        final Intent intent = new Intent(this, activityClass);
+        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NO_ANIMATION);
+        intent.setData(null);
+        startActivity(intent);
+        finish();
+        overridePendingTransition(0, 0);
     }
 }
