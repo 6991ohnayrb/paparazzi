@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_gravity="center"
+    android:background="@drawable/background_white_radius_15"
+    android:orientation="vertical"
+    android:padding="24dp"
+    >
+
+    <ImageView
+        android:id="@+id/dismiss_dialog"
+        android:layout_width="30dp"
+        android:layout_height="30dp"
+        android:layout_gravity="end"
+        android:layout_marginEnd="-10dp"
+        android:layout_marginTop="-10dp"
+        android:padding="10dp"
+        android:src="@drawable/ic_x"
+        />
+
+    <TextView
+        android:id="@+id/rate_this_image"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:fontFamily="@font/montserrat_bold"
+        android:text="@string/rate_image_title"
+        android:textAlignment="center"
+        android:textSize="24sp"
+        />
+
+    <TextView
+        android:id="@+id/your_rating"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:fontFamily="@font/montserrat_bold"
+        android:text="@string/your_rating"
+        android:textAlignment="center"
+        android:textSize="24sp"
+        android:visibility="gone"
+        />
+
+    <ImageView
+        android:id="@+id/rate_image_image"
+        android:layout_width="150dp"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_margin="10dp"
+        android:adjustViewBounds="true"
+        />
+
+    <include
+        layout="@layout/include_rating_stars"
+        android:layout_width="match_parent"
+        android:layout_height="40dp"
+        android:layout_marginTop="20dp"
+        />
+
+    <Button
+        android:id="@+id/rate_image_button"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:background="@color/colorPrimary"
+        android:fontFamily="@font/montserrat_bold"
+        android:text="@string/rate"
+        android:textColor="@color/white"
+        android:textSize="16sp"
+        />
+
+</LinearLayout>

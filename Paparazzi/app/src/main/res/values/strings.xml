@@ -22,7 +22,10 @@
     <string name="nearby_games">Nearby Games</string>
     <string name="new_game">New Game</string>
     <string name="please_enter_valid_values">Please enter valid values!</string>
+    <string name="rate">Rate</string>
+    <string name="rate_image_title">Rate this image!</string>
     <string name="send_message_error">There was an issue sending your message, please try again.</string>
     <string name="settings">Settings</string>
     <string name="use_the_following_game_room_name">Use the following game room name:</string>
+    <string name="your_rating">Your rating!</string>
 </resources>
