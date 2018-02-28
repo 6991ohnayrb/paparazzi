@@ -11,6 +11,7 @@
     <string name="greeting_personalized">Hi,\n%1$s</string>
     <string name="home">Home</string>
     <string name="invite_friends_to_this_game">Invite Friends to This Game</string>
+    <string name="images">Images</string>
     <string name="join_game">Join Game</string>
     <string name="last_name">Last Name</string>
     <string name="login_cancelled_message">Please login to use Paparazzi</string>
@@ -21,6 +22,8 @@
     <string name="my_games">My Games</string>
     <string name="nearby_games">Nearby Games</string>
     <string name="new_game">New Game</string>
+    <string name="no_images">No Images</string>
+    <string name="players">Players</string>
     <string name="please_enter_valid_values">Please enter valid values!</string>
     <string name="rate">Rate</string>
     <string name="rate_image_title">Rate this image!</string>

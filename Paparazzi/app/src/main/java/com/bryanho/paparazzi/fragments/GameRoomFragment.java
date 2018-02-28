@@ -11,6 +11,7 @@ import android.os.Handler;
 import android.provider.MediaStore;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.v4.app.FragmentManager;
 import android.support.v4.content.ContextCompat;
 import android.util.Base64;
 import android.view.LayoutInflater;
@@ -21,11 +22,13 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.RelativeLayout;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.bryanho.paparazzi.R;
 import com.bryanho.paparazzi.activities.MainActivity;
 import com.bryanho.paparazzi.adapters.GameRoomMessageAdapter;
+import com.bryanho.paparazzi.dialog.GameInfoDialog;
 import com.bryanho.paparazzi.dialog.InviteDialog;
 import com.bryanho.paparazzi.objects.Game;
 import com.bryanho.paparazzi.objects.GameInfo;
@@ -92,6 +95,16 @@ public class GameRoomFragment extends PaparazziFragment {
                         @Override
                         public void onClick(View v) {
                             new InviteDialog(mainActivity, gameRoomName).show();
+                        }
+                    });
+                }
+                final TextView toolbarTitle = mainActivity.findViewById(R.id.toolbar_title);
+                final FragmentManager fragmentManager = getFragmentManager();
+                if (toolbarTitle != null && fragmentManager != null) {
+                    toolbarTitle.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            new GameInfoDialog().show(fragmentManager, null);
                         }
                     });
                 }

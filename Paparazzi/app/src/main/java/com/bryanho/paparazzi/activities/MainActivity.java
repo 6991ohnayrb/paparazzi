@@ -8,6 +8,7 @@ import android.support.v4.widget.DrawerLayout;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.widget.AdapterView;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
@@ -44,6 +45,7 @@ public class MainActivity extends PaparazziActivity {
 
     @BindView(R.id.toolbar) Toolbar toolbar;
     @BindView(R.id.toolbar_title) TextView toolbarTitle;
+    @BindView(R.id.share_icon) ImageView shareIcon;
     @BindView(R.id.drawer_layout) DrawerLayout drawerLayout;
     @BindView(R.id.navigation_drawer) LinearLayout navigationDrawer;
     @BindView(R.id.user_greeting) TextView userGreeting;
@@ -61,13 +63,13 @@ public class MainActivity extends PaparazziActivity {
         setToolbarLeftIcon();
         setGreeting();
         checkPlayerExists();
-
-        // TODO: Remove this after testing HTTP request
-        navigateToFragment(MyGamesFragment.newInstance());
     }
 
     public void setToolbarTitle(String string) {
         toolbarTitle.setText(string);
+        toolbarTitle.setOnClickListener(null);
+        shareIcon.setVisibility(View.GONE);
+        shareIcon.setOnClickListener(null);
     }
 
     private void setToolbarLeftIcon() {
