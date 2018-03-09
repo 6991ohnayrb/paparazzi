@@ -29,6 +29,9 @@
     <string name="rate_image_title">Rate this image!</string>
     <string name="send_message_error">There was an issue sending your message, please try again.</string>
     <string name="start_game">Start Game</string>
+    <string name="start_game_error">There was an issue starting your game, please try again.</string>
+    <string name="start_game_success">Your game has successfully started!</string>
+    <string name="start_game_success_name">%1$s has successfully started!</string>
     <string name="settings">Settings</string>
     <string name="use_the_following_game_room_name">Use the following game room name:</string>
     <string name="your_rating">Your rating!</string>

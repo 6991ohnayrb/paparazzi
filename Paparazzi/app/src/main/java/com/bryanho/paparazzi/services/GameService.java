@@ -8,6 +8,7 @@ import com.bryanho.paparazzi.requests.LoginRequest;
 import com.bryanho.paparazzi.requests.PlayerExistsRequest;
 import com.bryanho.paparazzi.requests.RateImageRequest;
 import com.bryanho.paparazzi.requests.SendMessageRequest;
+import com.bryanho.paparazzi.requests.StartGameRequest;
 import com.bryanho.paparazzi.responses.CreateGameResponse;
 import com.bryanho.paparazzi.responses.GamesResponse;
 import com.bryanho.paparazzi.responses.GetMessagesResponse;
@@ -16,6 +17,7 @@ import com.bryanho.paparazzi.responses.LoginResponse;
 import com.bryanho.paparazzi.responses.PlayerExistsResponse;
 import com.bryanho.paparazzi.responses.RateImageResponse;
 import com.bryanho.paparazzi.responses.SendMessageResponse;
+import com.bryanho.paparazzi.responses.StartGameResponse;
 
 import io.reactivex.Observable;
 import retrofit2.http.Body;
@@ -46,4 +48,7 @@ public interface GameService {
 
     @POST("rateimage")
     Observable<RateImageResponse> rateImage(@Body RateImageRequest rateImageRequest);
+
+    @POST("startgame")
+    Observable<StartGameResponse> startGame(@Body StartGameRequest startGameRequest);
 }

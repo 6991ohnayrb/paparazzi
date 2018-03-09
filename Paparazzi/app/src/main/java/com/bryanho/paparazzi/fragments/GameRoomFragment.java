@@ -36,7 +36,9 @@ import com.bryanho.paparazzi.objects.GameInfo;
 import com.bryanho.paparazzi.objects.Message;
 import com.bryanho.paparazzi.objects.Player;
 import com.bryanho.paparazzi.requests.SendMessageRequest;
+import com.bryanho.paparazzi.requests.StartGameRequest;
 import com.bryanho.paparazzi.responses.SendMessageResponse;
+import com.bryanho.paparazzi.responses.StartGameResponse;
 
 import java.io.ByteArrayOutputStream;
 import java.util.List;
@@ -122,8 +124,11 @@ public class GameRoomFragment extends PaparazziFragment {
     }
 
     private void populateMessages() {
-        startGame.setVisibility(currentGame.getStarted() == 0 ? View.VISIBLE : View.GONE);
-        
+        final List<Player> players = currentGame.getPlayers();
+        if (players != null && players.size() > 0 && players.get(0).equals(new Player())) {
+            startGame.setVisibility(currentGame.getStarted() == 0 ? View.VISIBLE : View.GONE);
+        }
+
         final List<Message> messages = currentGame.getMessages();
         final Context context = getContext();
         if (context != null) {
@@ -258,5 +263,35 @@ public class GameRoomFragment extends PaparazziFragment {
         currentBitmap = null;
         attachedImageLayout.setVisibility(View.GONE);
         messageLayout.setVisibility(View.VISIBLE);
+    }
+
+    @OnClick(R.id.game_room_start_game)
+    public void startGameButtonPressed() {
+        final Observable<StartGameResponse> startGameResponseObservable = gameService.startGame(new StartGameRequest(currentGame));
+        startGameResponseObservable
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .doOnError(new Consumer<Throwable>() {
+                    @Override
+                    public void accept(Throwable throwable) throws Exception {
+                        System.err.println(throwable.getMessage());
+                    }
+                })
+                .subscribe(new Consumer<StartGameResponse>() {
+                    @Override
+                    public void accept(StartGameResponse startGameResponse) throws Exception {
+                        if (startGameResponse != null && "success".equals(startGameResponse.getMessageStatus())) {
+                            startGame.setVisibility(View.GONE);
+                            final GameInfo gameInfo = currentGame.getGameInfo();
+                            if (gameInfo != null) {
+                                Toast.makeText(getContext(), getString(R.string.start_game_success_name, gameInfo.getGameRoomName()), Toast.LENGTH_SHORT).show();
+                            } else {
+                                Toast.makeText(getContext(), getString(R.string.start_game_success), Toast.LENGTH_SHORT).show();
+                            }
+                        } else {
+                            Toast.makeText(getContext(), getString(R.string.send_message_error), Toast.LENGTH_SHORT).show();
+                        }
+                    }
+                });
     }
 }
