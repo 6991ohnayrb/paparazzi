@@ -17,6 +17,7 @@ import android.util.Base64;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -54,6 +55,7 @@ public class GameRoomFragment extends PaparazziFragment {
     private static final int CAMERA_PERMISSION_REQUEST = 1;
     private static final int FETCH_MESSAGES_INTERVAL_MILLISECONDS = 500;
 
+    @BindView(R.id.game_room_start_game) Button startGame;
     @BindView(R.id.game_room_messages) ListView messageList;
     @BindView(R.id.game_room_message_text) EditText gameRoomMessageText;
     @BindView(R.id.attached_image_layout) RelativeLayout attachedImageLayout;
@@ -120,6 +122,8 @@ public class GameRoomFragment extends PaparazziFragment {
     }
 
     private void populateMessages() {
+        startGame.setVisibility(currentGame.getStarted() == 0 ? View.VISIBLE : View.GONE);
+        
         final List<Message> messages = currentGame.getMessages();
         final Context context = getContext();
         if (context != null) {
