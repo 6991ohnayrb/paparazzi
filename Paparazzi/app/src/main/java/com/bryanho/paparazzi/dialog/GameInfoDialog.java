@@ -5,8 +5,10 @@ import android.app.Dialog;
 import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.support.design.widget.BottomSheetBehavior;
 import android.support.design.widget.BottomSheetDialog;
 import android.support.design.widget.BottomSheetDialogFragment;
+import android.view.View;
 import android.widget.GridView;
 import android.widget.ListView;
 import android.widget.TextView;
@@ -20,6 +22,7 @@ import com.bryanho.paparazzi.objects.GameInfo;
 import com.bryanho.paparazzi.objects.Image;
 import com.bryanho.paparazzi.objects.Message;
 
+import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -51,6 +54,26 @@ public class GameInfoDialog extends BottomSheetDialogFragment {
         final BottomSheetDialog bottomSheetDialog = new BottomSheetDialog(getContext());
         bottomSheetDialog.setCanceledOnTouchOutside(true);
         bottomSheetDialog.setContentView(R.layout.dialog_game_info);
+
+        try {
+            final Field mBehaviorField = bottomSheetDialog.getClass().getDeclaredField("mBehavior");
+            mBehaviorField.setAccessible(true);
+            final BottomSheetBehavior behavior = (BottomSheetBehavior) mBehaviorField.get(bottomSheetDialog);
+            behavior.setBottomSheetCallback(new BottomSheetBehavior.BottomSheetCallback() {
+                @Override
+                public void onStateChanged(@NonNull View bottomSheet, int newState) {
+                    if (newState == BottomSheetBehavior.STATE_DRAGGING) {
+                        behavior.setState(BottomSheetBehavior.STATE_EXPANDED);
+                    }
+                }
+
+                @Override
+                public void onSlide(@NonNull View bottomSheet, float slideOffset) {
+                }
+            });
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
 
         ButterKnife.bind(this, bottomSheetDialog);
 
