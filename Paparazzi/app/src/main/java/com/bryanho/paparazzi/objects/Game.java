@@ -13,6 +13,7 @@ public class Game {
     @SerializedName("gameInfo") private GameInfo gameInfo;
     @SerializedName("players") private List<Player> players = new ArrayList<>();
     @SerializedName("messages") private List<Message> messages = new ArrayList<>();
+    @SerializedName("started") private int started;
 
     public Game(String gameRoomName, int maximumPlayers, int gameDuration) {
         gameId = Math.abs(Long.toString(System.currentTimeMillis()).hashCode());

@@ -86,12 +86,14 @@ public class GameRoomMessageAdapter extends ArrayAdapter<Message> {
                             final int myRating = index == -1 ? 0 : image.getRatings().get(index);
 
                             imageFromOther.setImageBitmap(bitmap);
-                            imageFromOther.setOnClickListener(new View.OnClickListener() {
-                                @Override
-                                public void onClick(View v) {
-                                    new RateImageDialog(getContext(), bitmap, image.getImageId(), myRating, gameService, currentGame).show();
-                                }
-                            });
+                            if (currentGame.getStarted() == 1) {
+                                imageFromOther.setOnClickListener(new View.OnClickListener() {
+                                    @Override
+                                    public void onClick(View v) {
+                                        new RateImageDialog(getContext(), bitmap, image.getImageId(), myRating, gameService, currentGame).show();
+                                    }
+                                });
+                            }
                         }
                     }
                 } else {

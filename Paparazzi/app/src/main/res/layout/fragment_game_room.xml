@@ -1,99 +1,120 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout xmlns:android="http://schemas.android.com/apk/res/android">
 
-
-    <LinearLayout
+    <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:orientation="vertical"
         >
 
-        <ListView
-            android:id="@+id/game_room_messages"
-            android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_weight="1"
-            android:paddingEnd="5dp"
-            android:paddingStart="5dp"
+        <Button
+            android:id="@+id/game_room_start_game"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentTop="true"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="10dp"
+            android:background="@drawable/background_white_radius_15"
+            android:backgroundTint="@color/colorAccent"
+            android:fontFamily="@font/montserrat_bold"
+            android:padding="10dp"
+            android:text="@string/start_game"
+            android:visibility="gone"
             />
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:background="@color/colorPrimaryLight"
-            android:orientation="horizontal"
+            android:layout_height="match_parent"
+            android:orientation="vertical"
             >
 
-            <RelativeLayout
-                android:id="@+id/attached_image_layout"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_margin="10dp"
-                android:visibility="gone"
-                >
-
-                <ImageView
-                    android:id="@+id/attached_image"
-                    android:layout_width="wrap_content"
-                    android:layout_height="80dp"
-                    android:adjustViewBounds="true"
-                    android:padding="5dp"
-                    />
-
-                <ImageView
-                    android:id="@+id/attached_image_x"
-                    android:layout_width="25dp"
-                    android:layout_height="25dp"
-                    android:layout_alignEnd="@id/attached_image"
-                    android:layout_alignTop="@id/attached_image"
-                    android:src="@drawable/ic_circle_x"
-                    />
-
-            </RelativeLayout>
+            <ListView
+                android:id="@+id/game_room_messages"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="1"
+                android:paddingEnd="5dp"
+                android:paddingStart="5dp"
+                />
 
             <LinearLayout
-                android:id="@+id/message_layout"
-                android:layout_width="0dp"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_weight="1"
+                android:background="@color/colorPrimaryLight"
+                android:orientation="horizontal"
                 >
 
+                <RelativeLayout
+                    android:id="@+id/attached_image_layout"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="10dp"
+                    android:visibility="gone"
+                    >
+
+                    <ImageView
+                        android:id="@+id/attached_image"
+                        android:layout_width="wrap_content"
+                        android:layout_height="80dp"
+                        android:adjustViewBounds="true"
+                        android:padding="5dp"
+                        />
+
+                    <ImageView
+                        android:id="@+id/attached_image_x"
+                        android:layout_width="25dp"
+                        android:layout_height="25dp"
+                        android:layout_alignEnd="@id/attached_image"
+                        android:layout_alignTop="@id/attached_image"
+                        android:src="@drawable/ic_circle_x"
+                        />
+
+                </RelativeLayout>
+
+                <LinearLayout
+                    android:id="@+id/message_layout"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    >
+
+                    <ImageView
+                        android:id="@+id/add_image"
+                        android:layout_width="30dp"
+                        android:layout_height="30dp"
+                        android:layout_gravity="center_vertical"
+                        android:layout_margin="10dp"
+                        android:src="@drawable/ic_camera"
+                        android:tint="@color/white"
+                        />
+
+                    <EditText
+                        android:id="@+id/game_room_message_text"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_vertical"
+                        android:layout_weight="1"
+                        android:hint="@string/enter_your_message"
+                        android:padding="10dp"
+                        android:textColor="@color/black"
+                        android:textSize="14sp"
+                        />
+
+                </LinearLayout>
+
                 <ImageView
-                    android:id="@+id/add_image"
+                    android:id="@+id/game_room_send_message"
                     android:layout_width="30dp"
                     android:layout_height="30dp"
                     android:layout_gravity="center_vertical"
                     android:layout_margin="10dp"
-                    android:src="@drawable/ic_camera"
+                    android:src="@drawable/ic_send"
                     android:tint="@color/white"
-                    />
-
-                <EditText
-                    android:id="@+id/game_room_message_text"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center_vertical"
-                    android:layout_weight="1"
-                    android:hint="@string/enter_your_message"
-                    android:padding="10dp"
-                    android:textColor="@color/black"
-                    android:textSize="14sp"
                     />
 
             </LinearLayout>
 
-            <ImageView
-                android:id="@+id/game_room_send_message"
-                android:layout_width="30dp"
-                android:layout_height="30dp"
-                android:layout_gravity="center_vertical"
-                android:layout_margin="10dp"
-                android:src="@drawable/ic_send"
-                android:tint="@color/white"
-                />
-
         </LinearLayout>
 
-    </LinearLayout>
+    </RelativeLayout>
 
 </layout>
