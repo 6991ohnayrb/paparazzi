@@ -3,7 +3,7 @@
     android:layout_width="260dp"
     android:layout_height="match_parent"
     android:layout_gravity="start"
-    android:background="@color/white"
+    android:background="@color/darkMaroon"
     android:orientation="vertical"
     >
 
@@ -40,7 +40,7 @@
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="1"
-        android:background="@color/colorPrimaryLight"
+        android:background="@color/lightMaroon"
         android:orientation="vertical"
         android:paddingEnd="0dp"
         android:paddingStart="10dp"
@@ -61,7 +61,7 @@
             android:layout_marginEnd="10dp"
             android:layout_marginStart="10dp"
             android:background="@drawable/ic_new_game"
-            android:backgroundTint="@color/darkGray"
+            android:backgroundTint="@color/white"
             />
 
         <TextView
@@ -69,6 +69,7 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center_vertical"
             android:text="@string/new_game"
+            android:textColor="@color/white"
             />
 
     </LinearLayout>
@@ -88,7 +89,7 @@
             android:layout_marginEnd="10dp"
             android:layout_marginStart="10dp"
             android:background="@drawable/ic_new_game"
-            android:backgroundTint="@color/darkGray"
+            android:backgroundTint="@color/white"
             />
 
         <TextView
@@ -96,6 +97,7 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center_vertical"
             android:text="@string/join_game"
+            android:textColor="@color/white"
             />
 
     </LinearLayout>
