@@ -6,37 +6,6 @@
         android:layout_height="match_parent"
         >
 
-        <Button
-            android:id="@+id/game_room_start_game"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentTop="true"
-            android:layout_centerHorizontal="true"
-            android:layout_marginTop="10dp"
-            android:background="@drawable/background_white_radius_15"
-            android:backgroundTint="@color/colorAccent"
-            android:fontFamily="@font/montserrat_bold"
-            android:padding="10dp"
-            android:text="@string/start_game"
-            android:visibility="gone"
-            />
-
-        <TextView
-            android:id="@+id/game_room_your_target"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentTop="true"
-            android:layout_centerHorizontal="true"
-            android:layout_marginTop="10dp"
-            android:background="@drawable/background_white_radius_15"
-            android:backgroundTint="@color/colorAccent"
-            android:fontFamily="@font/montserrat_regular"
-            android:padding="10dp"
-            android:textColor="@color/black"
-            android:visibility="gone"
-
-            />
-
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
@@ -130,6 +99,36 @@
             </LinearLayout>
 
         </LinearLayout>
+
+        <Button
+            android:id="@+id/game_room_start_game"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentTop="true"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="10dp"
+            android:background="@drawable/background_white_radius_15"
+            android:backgroundTint="@color/colorAccent"
+            android:fontFamily="@font/montserrat_bold"
+            android:padding="10dp"
+            android:text="@string/start_game"
+            android:visibility="gone"
+            />
+
+        <TextView
+            android:id="@+id/game_room_your_target"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentTop="true"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="10dp"
+            android:background="@drawable/background_white_radius_15"
+            android:backgroundTint="@color/colorAccent"
+            android:fontFamily="@font/montserrat_regular"
+            android:padding="10dp"
+            android:textColor="@color/black"
+            android:visibility="gone"
+            />
 
     </RelativeLayout>
 
