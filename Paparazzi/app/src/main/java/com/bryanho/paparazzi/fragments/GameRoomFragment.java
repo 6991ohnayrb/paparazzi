@@ -58,6 +58,7 @@ public class GameRoomFragment extends PaparazziFragment {
     private static final int FETCH_MESSAGES_INTERVAL_MILLISECONDS = 500;
 
     @BindView(R.id.game_room_start_game) Button startGame;
+    @BindView(R.id.game_room_your_target) TextView paparazziText;
     @BindView(R.id.game_room_messages) ListView messageList;
     @BindView(R.id.game_room_message_text) EditText gameRoomMessageText;
     @BindView(R.id.attached_image_layout) RelativeLayout attachedImageLayout;
@@ -127,6 +128,16 @@ public class GameRoomFragment extends PaparazziFragment {
         final List<Player> players = currentGame.getPlayers();
         if (players != null && players.size() > 0 && players.get(0).equals(new Player())) {
             startGame.setVisibility(currentGame.getStarted() == 0 ? View.VISIBLE : View.GONE);
+        }
+
+        final Player paparazzi = currentGame.getPaparazzi();
+        final Player target = currentGame.getTarget();
+        if (paparazzi != null && paparazzi.equals(new Player()) && target != null) {
+            final String targetFullName = target.getFirstName() + " " + target.getLastName();
+            paparazziText.setText(getString(R.string.your_target_is_name, targetFullName));
+            paparazziText.setVisibility(View.VISIBLE);
+        } else {
+            paparazziText.setVisibility(View.GONE);
         }
 
         final List<Message> messages = currentGame.getMessages();

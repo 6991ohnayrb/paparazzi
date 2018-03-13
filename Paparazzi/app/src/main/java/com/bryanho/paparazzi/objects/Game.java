@@ -14,6 +14,8 @@ public class Game {
     @SerializedName("players") private List<Player> players = new ArrayList<>();
     @SerializedName("messages") private List<Message> messages = new ArrayList<>();
     @SerializedName("started") private int started;
+    @SerializedName("paparazzi") private Player paparazzi;
+    @SerializedName("target") private Player target;
 
     public Game(String gameRoomName, int maximumPlayers, int gameDuration) {
         gameId = Math.abs(Long.toString(System.currentTimeMillis()).hashCode());
