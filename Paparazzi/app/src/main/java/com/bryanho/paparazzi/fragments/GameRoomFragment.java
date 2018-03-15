@@ -42,13 +42,14 @@ import com.bryanho.paparazzi.responses.StartGameResponse;
 
 import java.io.ByteArrayOutputStream;
 import java.util.List;
+import java.util.concurrent.locks.ReentrantLock;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import io.reactivex.Observable;
 import io.reactivex.android.schedulers.AndroidSchedulers;
-import io.reactivex.functions.Consumer;
+import io.reactivex.observers.DisposableObserver;
 import io.reactivex.schedulers.Schedulers;
 
 public class GameRoomFragment extends PaparazziFragment {
@@ -58,12 +59,12 @@ public class GameRoomFragment extends PaparazziFragment {
     private static final int FETCH_MESSAGES_INTERVAL_MILLISECONDS = 500;
 
     @BindView(R.id.game_room_start_game) Button startGame;
-    @BindView(R.id.game_room_your_target) TextView paparazziText;
     @BindView(R.id.game_room_messages) ListView messageList;
     @BindView(R.id.game_room_message_text) EditText gameRoomMessageText;
     @BindView(R.id.attached_image_layout) RelativeLayout attachedImageLayout;
     @BindView(R.id.attached_image) ImageView attachedImage;
     @BindView(R.id.message_layout) LinearLayout messageLayout;
+    @BindView(R.id.game_room_send_message) ImageView sendButton;
 
     private Game currentGame;
     private MainActivity mainActivity;
@@ -93,9 +94,26 @@ public class GameRoomFragment extends PaparazziFragment {
             if (gameInfo != null) {
                 final String gameRoomName = gameInfo.getGameRoomName();
                 mainActivity.setToolbarTitle(gameRoomName);
+                final LinearLayout gameRoomButtonsLayout = mainActivity.findViewById(R.id.game_room_buttons_layout);
+                if (gameRoomButtonsLayout != null) {
+                    gameRoomButtonsLayout.setVisibility(View.VISIBLE);
+                }
+                final ImageView questIcon = mainActivity.findViewById(R.id.quest_icon);
+                if (questIcon != null) {
+                    questIcon.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            final Player paparazzi = currentGame.getPaparazzi();
+                            final Player target = currentGame.getTarget();
+                            if (paparazzi != null && paparazzi.equals(new Player()) && target != null) {
+                                final String targetFullName = target.getFirstName() + " " + target.getLastName();
+                                Toast.makeText(getContext(), getString(R.string.your_target_is_name, targetFullName), Toast.LENGTH_SHORT).show();
+                            }
+                        }
+                    });
+                }
                 final ImageView shareIcon = mainActivity.findViewById(R.id.share_icon);
                 if (shareIcon != null) {
-                    shareIcon.setVisibility(View.VISIBLE);
                     shareIcon.setOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View v) {
@@ -130,22 +148,14 @@ public class GameRoomFragment extends PaparazziFragment {
             startGame.setVisibility(currentGame.getStarted() == 0 ? View.VISIBLE : View.GONE);
         }
 
-        final Player paparazzi = currentGame.getPaparazzi();
-        final Player target = currentGame.getTarget();
-        if (paparazzi != null && paparazzi.equals(new Player()) && target != null) {
-            final String targetFullName = target.getFirstName() + " " + target.getLastName();
-            paparazziText.setText(getString(R.string.your_target_is_name, targetFullName));
-            paparazziText.setVisibility(View.VISIBLE);
-        } else {
-            paparazziText.setVisibility(View.GONE);
-        }
-
         final List<Message> messages = currentGame.getMessages();
-        final Context context = getContext();
-        if (context != null) {
-            final GameRoomMessageAdapter gameRoomMessageAdapter = new GameRoomMessageAdapter(context, messages, currentGame, gameService);
-            messageList.setAdapter(gameRoomMessageAdapter);
-            scrollToBottom();
+        if (messageList.getCount() != messages.size()) {
+            final Context context = getContext();
+            if (context != null) {
+                final GameRoomMessageAdapter gameRoomMessageAdapter = new GameRoomMessageAdapter(context, messages, currentGame, gameService);
+                messageList.setAdapter(gameRoomMessageAdapter);
+                scrollToBottom();
+            }
         }
     }
 
@@ -160,6 +170,7 @@ public class GameRoomFragment extends PaparazziFragment {
 
     @OnClick(R.id.game_room_send_message)
     public void sendMessage() {
+        sendButton.setEnabled(false);
         SendMessageRequest sendMessageRequest;
         if (currentBitmap != null) {
             final ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
@@ -180,15 +191,9 @@ public class GameRoomFragment extends PaparazziFragment {
         sendMessageResponseObservable
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .doOnError(new Consumer<Throwable>() {
+                .subscribeWith(new DisposableObserver<SendMessageResponse>() {
                     @Override
-                    public void accept(Throwable throwable) throws Exception {
-                        System.err.println(throwable.getMessage());
-                    }
-                })
-                .subscribe(new Consumer<SendMessageResponse>() {
-                    @Override
-                    public void accept(SendMessageResponse sendMessageResponse) throws Exception {
+                    public void onNext(SendMessageResponse sendMessageResponse) {
                         if (sendMessageResponse != null && "success".equals(sendMessageResponse.getMessageStatus())) {
                             gameRoomMessageText.setText("");
                             attachedImage.setImageBitmap(null);
@@ -198,6 +203,17 @@ public class GameRoomFragment extends PaparazziFragment {
                         } else {
                             Toast.makeText(getContext(), getString(R.string.send_message_error), Toast.LENGTH_SHORT).show();
                         }
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+                        sendButton.setEnabled(true);
+                        System.err.println(e.getMessage());
+                    }
+
+                    @Override
+                    public void onComplete() {
+                        sendButton.setEnabled(true);
                     }
                 });
     }
@@ -212,6 +228,12 @@ public class GameRoomFragment extends PaparazziFragment {
                     final MainActivity mainActivity = (MainActivity) activity;
                     for (Game game : mainActivity.games) {
                         if (game.getGameId() == currentGame.getGameId() && !game.equals(currentGame)) {
+                            if (currentGame.getStarted() == 2 && game.getStarted() == 0) {
+                                Toast.makeText(getContext(), getString(R.string.the_winner_is, game.getWinningPlayer().getFirstName()), Toast.LENGTH_LONG).show();
+                            }
+                            if (currentGame.getPaparazzi() == null && (new Player()).equals(game.getPaparazzi())) {
+                                Toast.makeText(getContext(), getString(R.string.you_are_the_paparazzi), Toast.LENGTH_SHORT).show();
+                            }
                             currentGame = game;
                             populateMessages();
                         }
@@ -282,15 +304,9 @@ public class GameRoomFragment extends PaparazziFragment {
         startGameResponseObservable
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .doOnError(new Consumer<Throwable>() {
+                .subscribeWith(new DisposableObserver<StartGameResponse>() {
                     @Override
-                    public void accept(Throwable throwable) throws Exception {
-                        System.err.println(throwable.getMessage());
-                    }
-                })
-                .subscribe(new Consumer<StartGameResponse>() {
-                    @Override
-                    public void accept(StartGameResponse startGameResponse) throws Exception {
+                    public void onNext(StartGameResponse startGameResponse) {
                         if (startGameResponse != null && "success".equals(startGameResponse.getMessageStatus())) {
                             startGame.setVisibility(View.GONE);
                             final GameInfo gameInfo = currentGame.getGameInfo();
@@ -302,6 +318,15 @@ public class GameRoomFragment extends PaparazziFragment {
                         } else {
                             Toast.makeText(getContext(), getString(R.string.send_message_error), Toast.LENGTH_SHORT).show();
                         }
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+                        System.err.println(e.getMessage());
+                    }
+
+                    @Override
+                    public void onComplete() {
                     }
                 });
     }

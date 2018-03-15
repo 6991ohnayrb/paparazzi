@@ -86,7 +86,7 @@ public class GameRoomMessageAdapter extends ArrayAdapter<Message> {
                             final int myRating = index == -1 ? 0 : image.getRatings().get(index);
 
                             imageFromOther.setImageBitmap(bitmap);
-                            if (currentGame.getStarted() == 1) {
+                            if (currentGame.getStarted() == 1 || currentGame.getStarted() == 2) {
                                 imageFromOther.setOnClickListener(new View.OnClickListener() {
                                     @Override
                                     public void onClick(View v) {

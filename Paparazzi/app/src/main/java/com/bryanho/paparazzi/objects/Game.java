@@ -16,6 +16,7 @@ public class Game {
     @SerializedName("started") private int started;
     @SerializedName("paparazzi") private Player paparazzi;
     @SerializedName("target") private Player target;
+    @SerializedName("winner") private Player winningPlayer;
 
     public Game(String gameRoomName, int maximumPlayers, int gameDuration) {
         gameId = Math.abs(Long.toString(System.currentTimeMillis()).hashCode());
