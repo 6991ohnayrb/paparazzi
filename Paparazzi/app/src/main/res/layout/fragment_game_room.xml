@@ -17,6 +17,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="0dp"
                 android:layout_weight="1"
+                android:background="@color/white"
                 android:paddingEnd="5dp"
                 android:paddingStart="5dp"
                 />
@@ -24,7 +25,7 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:background="@color/colorPrimaryLight"
+                android:background="@color/darkCyan"
                 android:orientation="horizontal"
                 >
 
@@ -80,7 +81,8 @@
                         android:layout_weight="1"
                         android:hint="@string/enter_your_message"
                         android:padding="10dp"
-                        android:textColor="@color/black"
+                        android:textColor="@color/white"
+                        android:textColorHint="@color/white"
                         android:textSize="14sp"
                         />
 
