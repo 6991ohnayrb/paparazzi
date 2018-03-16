@@ -20,7 +20,7 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 import io.reactivex.Observable;
 import io.reactivex.android.schedulers.AndroidSchedulers;
-import io.reactivex.functions.Consumer;
+import io.reactivex.observers.DisposableObserver;
 import io.reactivex.schedulers.Schedulers;
 
 public class NewGameFragment extends PaparazziFragment {
@@ -66,15 +66,9 @@ public class NewGameFragment extends PaparazziFragment {
             createGameResponseObservable
                     .subscribeOn(Schedulers.io())
                     .observeOn(AndroidSchedulers.mainThread())
-                    .doOnError(new Consumer<Throwable>() {
+                    .subscribeWith(new DisposableObserver<CreateGameResponse>() {
                         @Override
-                        public void accept(Throwable throwable) throws Exception {
-                            System.err.println(throwable.getMessage());
-                        }
-                    })
-                    .subscribe(new Consumer<CreateGameResponse>() {
-                        @Override
-                        public void accept(CreateGameResponse createGameResponse) throws Exception {
+                        public void onNext(CreateGameResponse createGameResponse) {
                             if (createGameResponse != null && createGameResponse.getMessageStatus() != null) {
                                 final String messageStatus = createGameResponse.getMessageStatus();
                                 if ("success".equals(messageStatus)) {
@@ -83,6 +77,15 @@ public class NewGameFragment extends PaparazziFragment {
                                     Toast.makeText(getContext(), messageStatus, Toast.LENGTH_SHORT).show();
                                 }
                             }
+                        }
+
+                        @Override
+                        public void onError(Throwable e) {
+                            System.err.println(e.getMessage());
+                        }
+
+                        @Override
+                        public void onComplete() {
                         }
                     });
         } catch (NumberFormatException ex) {

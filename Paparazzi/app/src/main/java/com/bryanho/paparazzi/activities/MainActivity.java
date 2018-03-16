@@ -17,7 +17,6 @@ import com.bryanho.paparazzi.R;
 import com.bryanho.paparazzi.adapters.GameAdapter;
 import com.bryanho.paparazzi.fragments.GameRoomFragment;
 import com.bryanho.paparazzi.fragments.JoinGameFragment;
-import com.bryanho.paparazzi.fragments.MyGamesFragment;
 import com.bryanho.paparazzi.fragments.NewGameFragment;
 import com.bryanho.paparazzi.fragments.SettingsFragment;
 import com.bryanho.paparazzi.objects.Game;
@@ -36,7 +35,7 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 import io.reactivex.Observable;
 import io.reactivex.android.schedulers.AndroidSchedulers;
-import io.reactivex.functions.Consumer;
+import io.reactivex.observers.DisposableObserver;
 import io.reactivex.schedulers.Schedulers;
 
 public class MainActivity extends PaparazziActivity {
@@ -45,6 +44,8 @@ public class MainActivity extends PaparazziActivity {
 
     @BindView(R.id.toolbar) Toolbar toolbar;
     @BindView(R.id.toolbar_title) TextView toolbarTitle;
+    @BindView(R.id.game_room_buttons_layout) LinearLayout gameRoomButtonsLayout;
+    @BindView(R.id.quest_icon) ImageView questIcon;
     @BindView(R.id.share_icon) ImageView shareIcon;
     @BindView(R.id.drawer_layout) DrawerLayout drawerLayout;
     @BindView(R.id.navigation_drawer) LinearLayout navigationDrawer;
@@ -68,7 +69,8 @@ public class MainActivity extends PaparazziActivity {
     public void setToolbarTitle(String string) {
         toolbarTitle.setText(string);
         toolbarTitle.setOnClickListener(null);
-        shareIcon.setVisibility(View.GONE);
+        gameRoomButtonsLayout.setVisibility(View.GONE);
+        questIcon.setOnClickListener(null);
         shareIcon.setOnClickListener(null);
     }
 
@@ -102,21 +104,24 @@ public class MainActivity extends PaparazziActivity {
         playerExistsResponseObservable
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .doOnError(new Consumer<Throwable>() {
+                .subscribeWith(new DisposableObserver<PlayerExistsResponse>() {
                     @Override
-                    public void accept(Throwable throwable) throws Exception {
-                        System.err.println(throwable.getMessage());
-                    }
-                })
-                .subscribe(new Consumer<PlayerExistsResponse>() {
-                    @Override
-                    public void accept(PlayerExistsResponse playerExistsResponse) throws Exception {
+                    public void onNext(PlayerExistsResponse playerExistsResponse) {
                         if (playerExistsResponse == null || !"success".equals(playerExistsResponse.getMessageStatus())) {
                             navigateToActivityNoHistory(LoginActivity.class);
                         } else {
                             startGameRoomFetching();
                             setMenuGamesList();
                         }
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+                        System.err.println(e.getMessage());
+                    }
+
+                    @Override
+                    public void onComplete() {
                     }
                 });
     }
@@ -138,15 +143,9 @@ public class MainActivity extends PaparazziActivity {
         gamesResponseObservable
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .doOnError(new Consumer<Throwable>() {
+                .subscribeWith(new DisposableObserver<GamesResponse>() {
                     @Override
-                    public void accept(Throwable throwable) throws Exception {
-                        System.err.println(throwable.getMessage());
-                    }
-                })
-                .subscribe(new Consumer<GamesResponse>() {
-                    @Override
-                    public void accept(GamesResponse gamesResponse) throws Exception {
+                    public void onNext(GamesResponse gamesResponse) {
                         if (gamesResponse != null && gamesResponse.getGames() != null) {
                             final List<Game> responseGames = gamesResponse.getGames();
                             if (games == null || !games.equals(responseGames)) {
@@ -154,6 +153,15 @@ public class MainActivity extends PaparazziActivity {
                                 setMenuGamesList();
                             }
                         }
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+                        System.err.println(e.getMessage());
+                    }
+
+                    @Override
+                    public void onComplete() {
                     }
                 });
     }

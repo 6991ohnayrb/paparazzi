@@ -20,7 +20,7 @@ import com.facebook.login.LoginResult;
 
 import io.reactivex.Observable;
 import io.reactivex.android.schedulers.AndroidSchedulers;
-import io.reactivex.functions.Consumer;
+import io.reactivex.observers.DisposableObserver;
 import io.reactivex.schedulers.Schedulers;
 
 public class LoginActivity extends PaparazziActivity {
@@ -75,15 +75,9 @@ public class LoginActivity extends PaparazziActivity {
         loginResponseObservable
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .doOnError(new Consumer<Throwable>() {
+                .subscribeWith(new DisposableObserver<LoginResponse>() {
                     @Override
-                    public void accept(Throwable throwable) throws Exception {
-                        System.err.println(throwable.getMessage());
-                    }
-                })
-                .subscribe(new Consumer<LoginResponse>() {
-                    @Override
-                    public void accept(LoginResponse loginResponse) throws Exception {
+                    public void onNext(LoginResponse loginResponse) {
                         if (loginResponse != null) {
                             switch (loginResponse.getLoginStatus()) {
                                 case LoginStatus.newPlayer:
@@ -100,6 +94,15 @@ public class LoginActivity extends PaparazziActivity {
                                     break;
                             }
                         }
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+                        System.err.println(e.getMessage());
+                    }
+
+                    @Override
+                    public void onComplete() {
                     }
                 });
     }
